@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Buscar y clickear IndianWebs",
+  "version": "1.0",
+  "description": "Abre Google y hace clic en indianwebs.com",
+  "permissions": [
+    "scripting",
+    "tabs"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "host_permissions": [
+    "https://www.google.com/*"
+  ]
+}
