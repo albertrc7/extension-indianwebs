@@ -1,12 +1,19 @@
-// Esperamos unos segundos para que cargue bien todo el DOM
 setTimeout(() => {
-  // Google cambia a menudo su estructura, aquí buscamos enlaces con indianwebs.com
-  const links = document.querySelectorAll('a[href*="indianwebs.com"]');
+  const resultados = Array.from(document.querySelectorAll('div.g, div.MjjYud'))
+    .filter(div => div.querySelector('a'));
 
-  if (links.length > 0) {
-    // Hacemos clic en el primer enlace encontrado
-    links[0].click();
-  } else {
+  let posicionReal = null;
+
+  resultados.forEach((resultado, index) => {
+    const link = resultado.querySelector('a[href*="indianwebs.com"]');
+    if (link && posicionReal === null) {
+      posicionReal = index + 1;
+      chrome.runtime.sendMessage({ action: "guardarPosicion", posicion: posicionReal });
+      link.click();
+    }
+  });
+
+  if (posicionReal === null) {
     console.log("No se encontró enlace a indianwebs.com");
   }
-}, 1000);
+}, 3000);
