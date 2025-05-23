@@ -16,4 +16,4 @@ setTimeout(() => {
   if (posicionReal === null) {
     console.log("No se encontró enlace a indianwebs.com");
   }
-}, 3000);
+}, 1200);

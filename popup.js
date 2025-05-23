@@ -8,15 +8,15 @@ chrome.runtime.sendMessage({ action: "obtenerPosiciones" }, (response) => {
     let html = "";
 
     if (response.diseño !== null) {
-      html += `👉 Diseño web: posición ${response.diseño}<br>`;
+      html += `👉 <strong>Diseño web:</strong> Posición <strong>${response.diseño}</strong><br>`;
     } else {
-      html += `👉 Diseño web: aún sin resultado<br>`;
+      html += `👉 <strong>Diseño web:</strong> Aún sin resultado<br>`;
     }
 
     if (response.mantenimiento !== null) {
-      html += `👉 Mantenimiento web: posición ${response.mantenimiento}<br>`;
+      html += `👉 <strong>Mantenimiento web:</strong> Posición <strong>${response.mantenimiento}</strong><br>`;
     } else {
-      html += `👉 Mantenimiento web: aún sin resultado<br>`;
+      html += `👉 <strong>Mantenimiento web:</strong> Aún sin resultado<br>`;
     }
 
     posDiv.innerHTML = html;
