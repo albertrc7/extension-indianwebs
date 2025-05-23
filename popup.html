@@ -1,56 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-  <title>Buscar IndianWebs</title>
+  <meta charset="UTF-8" />
+  <title>Buscador IndianWebs</title>
   <style>
-    html, body {
-      width: 300px;
-      height: 200px;
+    body {
       margin: 0;
       padding: 20px;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+      width: 420px;
+      height: auto;
+      font-family: 'Segoe UI', Roboto, sans-serif;
+      background: url('img/fondo.png') no-repeat center center fixed;
+      background-size: contain;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       box-sizing: border-box;
+      
     }
 
-    h1 {
-      font-size: 16px;
-      margin-bottom: 20px;
-      color: #333;
+   h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #000000;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+
+    .card {
+      background: #ffffffc0;
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 280px;
       text-align: center;
+      transition: all 0.3s ease-in-out;
+      max-width: 300px;
     }
 
-    button {
-      background-color: #4a90e2;
+  
+
+    .posicion {
+      font-size: 14px;
+      color: #374151;
+      margin-top: 8px;
+    }
+
+    .btn {
+      background-color: #2563eb;
       color: white;
       border: none;
       border-radius: 8px;
       padding: 10px 20px;
+      margin-top: 16px;
+      margin-bottom: 16px;
       font-size: 14px;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       transition: background-color 0.3s ease, transform 0.2s ease;
     }
 
-    button:hover {
-      background-color: #357ABD;
-      transform: scale(1.05);
+    .btn:hover {
+      background-color: #1d4ed8;
+      transform: translateY(-1px);
     }
 
-    button:active {
+    .btn:active {
       transform: scale(0.98);
     }
+    .card h2 {
+    margin-top: 0;
+    }
+
   </style>
 </head>
 <body>
   <h1>Buscar IndianWebs</h1>
-  <button id="iniciar">Iniciar búsqueda</button>
-  <div id="posicion" style="margin-top: 20px; font-size: 14px; color: #555;"></div>
+  <button class="btn" id="iniciar">Iniciar búsqueda</button>
+  <div class="card">
+    
+    <h2>Resultados:</h2>
+    <div class="posicion" id="posicion">
+      Cargando resultados...
+    </div>
+    
+  </div>
   <script src="popup.js"></script>
 </body>
 </html>
