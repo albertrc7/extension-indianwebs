@@ -33,22 +33,25 @@ function abrirBusqueda(query, clave) {
           args: [clave],
           func: (clave) => {
             setTimeout(() => {
-              const resultados = Array.from(document.querySelectorAll('div.g, div.MjjYud'))
-                .filter(div => div.querySelector('a'));
-    
+              // Solo resultados orgánicos reales (ignora anuncios, mapas, etc.)
+              const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
               let posicionReal = null;
-    
+
               resultados.forEach((resultado, index) => {
                 const link = resultado.querySelector('a[href*="indianwebs.com"]');
                 if (link && posicionReal === null) {
                   posicionReal = index + 1;
-                  chrome.runtime.sendMessage({ action: "guardarPosicion", posicion: posicionReal, clave: clave });
+                  chrome.runtime.sendMessage({
+                    action: "guardarPosicion",
+                    posicion: posicionReal,
+                    clave: clave
+                  });
                   link.click();
                 }
               });
 
               if (posicionReal === null) {
-                console.log("No se encontró enlace a indianwebs.com");
+                console.log("No se encontró enlace a indianwebs.com en resultados orgánicos");
               }
             }, 3000);
           }

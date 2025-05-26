@@ -1,6 +1,6 @@
 setTimeout(() => {
-  const resultados = Array.from(document.querySelectorAll('div.g, div.MjjYud'))
-    .filter(div => div.querySelector('a'));
+  // Solo seleccionamos los resultados orgánicos reales
+  const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
 
   let posicionReal = null;
 
@@ -8,12 +8,13 @@ setTimeout(() => {
     const link = resultado.querySelector('a[href*="indianwebs.com"]');
     if (link && posicionReal === null) {
       posicionReal = index + 1;
-      chrome.runtime.sendMessage({ action: "guardarPosicion", posicion: posicionReal });
+      chrome.runtime.sendMessage({ action: "guardarPosicion", posicion: posicionReal, clave: clave });
       link.click();
     }
+    //hola
   });
 
   if (posicionReal === null) {
-    console.log("No se encontró enlace a indianwebs.com");
+    console.log("No se encontró enlace a indianwebs.com en resultados orgánicos");
   }
-}, 1200);
+}, 3000);
