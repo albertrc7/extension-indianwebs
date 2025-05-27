@@ -1,44 +1,98 @@
 let posiciones = {
-  diseño: null,
-  mantenimiento: null
+  personalizada: null
 };
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "iniciarBusqueda") {
-    posiciones = { diseño: null, mantenimiento: null }; // resetear resultados
+    posiciones = { personalizada: null }; // resetear resultados
 
-    abrirBusqueda("Diseño páginas web Barcelona", "diseño");
-    abrirBusqueda("Mantenimiento web Barcelona", "mantenimiento");
+    const query = message.query;
+    const dominio = message.dominio;
+    abrirBusqueda(query, "personalizada", dominio);
   }
 
-  if (message.action === "guardarPosicion") {
-    if (message.clave) {
-      posiciones[message.clave] = message.posicion;
-    }
+ if (message.action === "guardarPosicion") {
+  if (message.clave) {
+    posiciones[message.clave] = message.posicion;
+
+    // 🔔 Notificar a todas las pestañas que hay una actualización
+    chrome.tabs.query({}, (tabs) => {
+      tabs.forEach((tab) => {
+        chrome.tabs.sendMessage(tab.id, {
+          action: "posicionesActualizadas",
+          posiciones: posiciones
+        });
+      });
+    });
   }
+}
+
 
   if (message.action === "obtenerPosiciones") {
     sendResponse(posiciones);
   }
 });
 
-function abrirBusqueda(query, clave) {
+chrome.action.onClicked.addListener((tab) => {
+  const url = tab.url || "";
+
+  // Si estamos en una pestaña prohibida, redirige a Google y carga el sidebar
+  if (
+    url === "chrome://newtab/" ||
+    url.startsWith("chrome://") ||
+    url.startsWith("chrome-extension://") ||
+    url.startsWith("https://chrome.google.com/webstore")
+  ) {
+    chrome.tabs.update(tab.id, { url: "https://www.google.com" }, (updatedTab) => {
+      // Esperamos a que cargue para inyectar
+      chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
+        if (tabId === updatedTab.id && info.status === "complete") {
+          chrome.scripting.executeScript({
+            target: { tabId: updatedTab.id },
+            files: ["content_sidebar.js"]
+          });
+          chrome.tabs.onUpdated.removeListener(listener);
+        }
+      });
+    });
+    return;
+  }
+
+  // Si no hay bloqueo, inyectar directamente
+  setTimeout(() => {
+    chrome.scripting.executeScript({
+      target: { tabId: tab.id },
+      files: ['content_sidebar.js']
+    }, (result) => {
+      if (chrome.runtime.lastError) {
+        console.warn("Error al inyectar:", chrome.runtime.lastError.message);
+        chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: () => alert("No se pudo cargar el sidebar. ¿Estás en una página cargada completamente?")
+        });
+      }
+    });
+  }, 500);
+});
+
+
+
+function abrirBusqueda(query, clave, dominioObjetivo) {
   const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
 
-  chrome.tabs.create({ url: url }, (tab) => {
+  chrome.tabs.create({ url: url, active: false }, (tab) => {
     chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
       if (tabId === tab.id && info.status === 'complete') {
         chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          args: [clave],
-          func: (clave) => {
+          args: [clave, dominioObjetivo],
+          func: (clave, dominio) => {
             setTimeout(() => {
-              // Solo resultados orgánicos reales (ignora anuncios, mapas, etc.)
               const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
               let posicionReal = null;
 
               resultados.forEach((resultado, index) => {
-                const link = resultado.querySelector('a[href*="indianwebs.com"]');
+                const link = resultado.querySelector(`a[href*="${dominio}"]`);
                 if (link && posicionReal === null) {
                   posicionReal = index + 1;
                   chrome.runtime.sendMessage({
@@ -51,7 +105,7 @@ function abrirBusqueda(query, clave) {
               });
 
               if (posicionReal === null) {
-                console.log("No se encontró enlace a indianwebs.com en resultados orgánicos");
+                console.log("No se encontró el dominio en resultados orgánicos:", dominio);
               }
             }, 3000);
           }

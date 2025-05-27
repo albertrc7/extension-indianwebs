@@ -5,17 +5,26 @@
   "description": "Abre Google y hace clic en indianwebs.com",
   "permissions": [
     "scripting",
-    "tabs"
+    "tabs",
+    "activeTab",
+    "storage"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html"
+    "default_title": "Buscar IndianWebs"
   },
   "host_permissions": [
-    "https://www.google.com/*"
+    "<all_urls>"
   ],
+  "web_accessible_resources": [
+  {
+    "resources": ["content_sidebar.js", "img/imagen.png"],
+    "matches": ["<all_urls>"]
+  }
+]
+,
   "icons": {
     "16": "icon-16.png",
     "128": "icon-128.png"
