@@ -249,7 +249,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
   }
 }
 
-// 🔄 ESCUCHAR ACTUALIZACIONES DE POSICIONES EN VIVO
+
 chrome.runtime.onMessage.addListener((message) => {
   if (message.action === "posicionesActualizadas") {
     const posDiv = document.getElementById("sidebar-posiciones");

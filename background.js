@@ -4,7 +4,7 @@ let posiciones = {
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "iniciarBusqueda") {
-    posiciones = { personalizada: null }; // resetear resultados
+    posiciones = { personalizada: null }; 
 
     const query = message.query;
     const dominio = message.dominio;
@@ -15,7 +15,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.clave) {
     posiciones[message.clave] = message.posicion;
 
-    // 🔔 Notificar a todas las pestañas que hay una actualización
+    
     chrome.tabs.query({}, (tabs) => {
       tabs.forEach((tab) => {
         chrome.tabs.sendMessage(tab.id, {
@@ -36,7 +36,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.action.onClicked.addListener((tab) => {
   const url = tab.url || "";
 
-  // Si estamos en una pestaña prohibida, redirige a Google y carga el sidebar
+  
   if (
     url === "chrome://newtab/" ||
     url.startsWith("chrome://") ||
@@ -44,7 +44,7 @@ chrome.action.onClicked.addListener((tab) => {
     url.startsWith("https://chrome.google.com/webstore")
   ) {
     chrome.tabs.update(tab.id, { url: "https://www.google.com" }, (updatedTab) => {
-      // Esperamos a que cargue para inyectar
+      
       chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
         if (tabId === updatedTab.id && info.status === "complete") {
           chrome.scripting.executeScript({
@@ -58,7 +58,7 @@ chrome.action.onClicked.addListener((tab) => {
     return;
   }
 
-  // Si no hay bloqueo, inyectar directamente
+  
   setTimeout(() => {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
