@@ -311,36 +311,42 @@ if (!document.getElementById("indianwebs-sidebar")) {
   });
 
   function renderizarHistorial(historial) {
-    const lista = document.getElementById("historial-lista");
-    lista.innerHTML = "";
+  const lista = document.getElementById("historial-lista");
+  lista.innerHTML = "";
 
-    historial.forEach(({ query, dominio, posicion }) => {
-      const li = document.createElement("li");
-      li.style.marginBottom = "10px";
-      li.innerHTML = `
-        <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center;">
-          <div>
-            🔍 <strong>${query}</strong><br>
-            <small style="color: #555">${dominio}</small>
-          </div>
-          ${posicion === 'cargando'
-            ? `<div style="width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div>`
+  historial.forEach(({ query, dominio, posicion }) => {
+    const li = document.createElement("li");
+    li.style.marginBottom = "10px";
+
+    li.innerHTML = `
+      <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          🔍 <strong>${query}</strong><br>
+          <small style="color: #555">${dominio}</small>
+        </div>
+        ${posicion === 'cargando'
+          ? `<div style="width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div>`
+          : posicion === 'NoEncontrado'
+            ? `<div style="font-size: 16px; color: red; margin-left: 10px;"><span style="color: red; font-size:12px;">#NoEncontrado</span></div>`
             : posicion !== null
               ? `<div style="font-size: 12px; color: #2563eb; margin-left: 10px; white-space: nowrap;">#${posicion}</div>`
               : ""}
-        </div>
-      `;
-      li.querySelector(".historial-item").addEventListener("click", (e) => {
-        e.preventDefault();
-        document.getElementById("busqueda").value = query;
-        document.getElementById("dominio").value = dominio;
-        chrome.runtime.sendMessage({
-          action: "iniciarBusqueda",
-          query,
-          dominio
-        });
+      </div>
+    `;
+
+    li.querySelector(".historial-item").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("busqueda").value = query;
+      document.getElementById("dominio").value = dominio;
+      chrome.runtime.sendMessage({
+        action: "iniciarBusqueda",
+        query,
+        dominio
       });
-      lista.appendChild(li);
     });
-  }
+
+    lista.appendChild(li);
+  });
+}
+
 }
