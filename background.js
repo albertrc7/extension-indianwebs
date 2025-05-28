@@ -78,7 +78,7 @@ chrome.action.onClicked.addListener((tab) => {
 
 
 function abrirBusqueda(query, clave, dominioObjetivo) {
-  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100`;
 
   chrome.tabs.create({ url: url, active: false }, (tab) => {
     chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
