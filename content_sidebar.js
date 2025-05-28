@@ -254,13 +254,23 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
     chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio });
 
-    // Ocultar spinner si no hay respuesta en 15 segundos
     setTimeout(() => {
-      const posDiv = document.getElementById("sidebar-posiciones");
-      if (posDiv && posDiv.querySelector("#loading-spinner")) {
-        posDiv.innerHTML = `👉 <strong>Resultado:</strong> Aún sin resultado<br>`;
+  const posDiv = document.getElementById("sidebar-posiciones");
+  if (posDiv && posDiv.querySelector("#loading-spinner")) {
+    posDiv.innerHTML = `👉 <strong>Resultado:</strong> ❌No encontrado<br>`;
+
+    chrome.storage.local.get(["historialBusquedas"], (data) => {
+      const historial = data.historialBusquedas || [];
+      if (historial.length > 0 && historial[0].posicion === 'cargando') {
+        historial[0].posicion = 'NoEncontrado';
+        chrome.storage.local.set({ historialBusquedas: historial }, () => {
+          renderizarHistorial(historial);
+        });
       }
-    }, 15000);
+    });
+  }
+}, 15000);
+
 
     chrome.storage.local.get(["historialBusquedas"], (data) => {
       const historial = data.historialBusquedas || [];
