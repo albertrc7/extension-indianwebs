@@ -113,28 +113,31 @@ if (!document.getElementById("indianwebs-sidebar")) {
       <div id="sidebar-posiciones" style="font-size: 14px; color: #374151; margin-top: 8px;">👉 <strong>Resultado:</strong> Aún sin resultado<br></div>
     </div>
 
-    <div id="historial" style="
-      margin-top: 20px;
-      width: 100%;
-      max-width: 280px;
-      font-size: 13px;
-      color: #444;
-      overflow-y: auto;
-      max-height: 280px;
-    ">
-      <h3 style="margin-bottom: 8px; font-size: 15px;">Historial</h3>
-      <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
+   <div id="historial" style="
+  flex-grow: 1;
+  overflow-y: auto;
+  width: 100%;
+  max-width: 280px;
+  font-size: 13px;
+  color: #444;
+  margin-top: 20px;
+  padding-bottom: 80px; /* para evitar que se tape con el CTA fijo abajo */
+  box-sizing: border-box;
+">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+      <h3 style="margin: 0; font-size: 15px;">Historial</h3>
       <button id="borrar-historial" style="
-        margin-top: 12px;
-        padding: 6px 10px;
-        background: #444;
-        color: white;
+        background: transparent;
+        color: #888;
         border: none;
-        border-radius: 6px;
-        font-size: 12px;
+        font-size: 16px;
+        padding: 3px;
         cursor: pointer;
-      ">🗑️ Borrar historial</button>
-    </div>
+      ">🗑️</button>
+      </div>
+      <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
+      </div>
+
 
     <div id="cta-seo" style="
       position: absolute;
