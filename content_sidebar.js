@@ -39,9 +39,8 @@ if (!document.getElementById("indianwebs-sidebar")) {
       height: 70px;
       object-fit: contain;
       background-color: white;
-      padding: 6px;
       margin: 10px 0;
-      border-radius: 12px;
+      border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
       border: 1px solid #ddd;
     " />
@@ -405,11 +404,37 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
       e.preventDefault();
       document.getElementById("busqueda").value = query;
       document.getElementById("dominio").value = dominio;
-      chrome.runtime.sendMessage({
-        action: "iniciarBusqueda",
-        query,
-        dominio
-      });
+      const clave = `${query}_${dominio}_${Date.now()}`;
+chrome.runtime.sendMessage({
+  action: "iniciarBusqueda",
+  query,
+  dominio,
+  clave
+});
+
+chrome.storage.local.get(["historialBusquedas"], (data) => {
+  const historial = data.historialBusquedas || [];
+  historial.unshift({ query, dominio, clave, posicion: "cargando" });
+  const nuevoHistorial = historial.slice(0, 10);
+  chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
+    renderizarHistorial(nuevoHistorial);
+  });
+});
+
+setTimeout(() => {
+  chrome.storage.local.get(["historialBusquedas"], (data) => {
+    let historial = data.historialBusquedas || [];
+    historial = historial.map(item =>
+      item.clave === clave && item.posicion === "cargando"
+        ? { ...item, posicion: "NoEncontrado" }
+        : item
+    );
+    chrome.storage.local.set({ historialBusquedas: historial }, () => {
+      renderizarHistorial(historial);
+    });
+  });
+}, 30000);
+
     });
 
     lista.appendChild(li);

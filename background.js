@@ -75,14 +75,15 @@ function abrirBusqueda(query, clave, dominioObjetivo) {
       if (tabId === tab.id && info.status === 'complete') {
         chrome.tabs.onUpdated.removeListener(listener);
 
-        const delay = Math.floor(Math.random() * 1000); // Espera aleatoria de hasta 1 segundo
+        const delay = Math.floor(Math.random() * 1000); // anticolapso
 
         setTimeout(() => {
+          // Revisa cada 100ms si hay resultados útiles
           chrome.scripting.executeScript({
             target: { tabId: tab.id },
             args: [clave, dominioObjetivo],
             func: (clave, dominio) => {
-              setTimeout(() => {
+              const intervalo = setInterval(() => {
                 const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
                 let posicionReal = null;
 
@@ -90,26 +91,30 @@ function abrirBusqueda(query, clave, dominioObjetivo) {
                   const link = resultado.querySelector(`a[href*="${dominio}"]`);
                   if (link && posicionReal === null) {
                     posicionReal = index + 1;
+
                     const data = {
                       action: "guardarPosicion",
                       posicion: posicionReal,
                       clave: clave
                     };
+
                     const tag = document.createElement('div');
                     tag.id = "mensaje-a-extension";
                     tag.setAttribute('data-msg', JSON.stringify(data));
                     document.body.appendChild(tag);
+
                     link.click();
                   }
                 });
 
-                if (posicionReal === null) {
-                  console.log("No se encontró el dominio en resultados orgánicos:", dominio);
+                if (posicionReal !== null || resultados.length > 0) {
+                  clearInterval(intervalo);
                 }
-              }, 3000);
+              }, 100);
             }
           });
 
+          // Inyectar listener para recibir datos desde el DOM
           chrome.scripting.executeScript({
             target: { tabId: tab.id },
             func: () => {

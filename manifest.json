@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Buscar y clickear IndianWebs",
+  "name": "BeFound",
   "version": "1.0",
-  "description": "Abre Google y hace clic en indianwebs.com",
+  "description": "Descubre en qué posición aparece tu web, haz clic automáticamente en tu dominio y mejora tu visibilidad con esta extensión pensada para SEO.",
   "permissions": [
     "scripting",
     "tabs",
@@ -13,7 +13,7 @@
     "service_worker": "background.js"
   },
   "action": {
-    "default_title": "Buscar IndianWebs"
+    "default_title": "BeFound"
   },
   "host_permissions": [
     "<all_urls>"
