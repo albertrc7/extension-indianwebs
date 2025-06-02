@@ -1,32 +1,27 @@
-let posiciones = {
-  personalizada: null
-};
+let posiciones = {};
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "iniciarBusqueda") {
-    posiciones = { personalizada: null }; 
-
-    const query = message.query;
-    const dominio = message.dominio;
-    abrirBusqueda(query, "personalizada", dominio);
+    const { query, dominio, clave } = message;
+    posiciones[clave] = null;
+    abrirBusqueda(query, clave, dominio);
   }
 
- if (message.action === "guardarPosicion") {
-  if (message.clave) {
-    posiciones[message.clave] = message.posicion;
+  if (message.action === "guardarPosicion") {
+    if (message.clave) {
+      posiciones[message.clave] = message.posicion;
 
-    
-    chrome.tabs.query({}, (tabs) => {
-      tabs.forEach((tab) => {
-        chrome.tabs.sendMessage(tab.id, {
-          action: "posicionesActualizadas",
-          posiciones: posiciones
+      chrome.tabs.query({}, (tabs) => {
+        tabs.forEach((tab) => {
+          chrome.tabs.sendMessage(tab.id, {
+            action: "posicionesActualizadas",
+            posiciones,
+            clave: message.clave
+          });
         });
       });
-    });
+    }
   }
-}
-
 
   if (message.action === "obtenerPosiciones") {
     sendResponse(posiciones);
@@ -36,7 +31,6 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 chrome.action.onClicked.addListener((tab) => {
   const url = tab.url || "";
 
-  
   if (
     url === "chrome://newtab/" ||
     url.startsWith("chrome://") ||
@@ -44,7 +38,6 @@ chrome.action.onClicked.addListener((tab) => {
     url.startsWith("https://chrome.google.com/webstore")
   ) {
     chrome.tabs.update(tab.id, { url: "https://www.google.com" }, (updatedTab) => {
-      
       chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
         if (tabId === updatedTab.id && info.status === "complete") {
           chrome.scripting.executeScript({
@@ -58,7 +51,6 @@ chrome.action.onClicked.addListener((tab) => {
     return;
   }
 
-  
   setTimeout(() => {
     chrome.scripting.executeScript({
       target: { tabId: tab.id },
@@ -75,42 +67,65 @@ chrome.action.onClicked.addListener((tab) => {
   }, 500);
 });
 
-
-
 function abrirBusqueda(query, clave, dominioObjetivo) {
   const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100`;
 
   chrome.tabs.create({ url: url, active: false }, (tab) => {
     chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
       if (tabId === tab.id && info.status === 'complete') {
-        chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          args: [clave, dominioObjetivo],
-          func: (clave, dominio) => {
-            setTimeout(() => {
-              const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
-              let posicionReal = null;
+        chrome.tabs.onUpdated.removeListener(listener);
 
-              resultados.forEach((resultado, index) => {
-                const link = resultado.querySelector(`a[href*="${dominio}"]`);
-                if (link && posicionReal === null) {
-                  posicionReal = index + 1;
-                  chrome.runtime.sendMessage({
-                    action: "guardarPosicion",
-                    posicion: posicionReal,
-                    clave: clave
-                  });
-                  link.click();
+        const delay = Math.floor(Math.random() * 1000); // Espera aleatoria de hasta 1 segundo
+
+        setTimeout(() => {
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            args: [clave, dominioObjetivo],
+            func: (clave, dominio) => {
+              setTimeout(() => {
+                const resultados = Array.from(document.querySelectorAll('.tF2Cxc'));
+                let posicionReal = null;
+
+                resultados.forEach((resultado, index) => {
+                  const link = resultado.querySelector(`a[href*="${dominio}"]`);
+                  if (link && posicionReal === null) {
+                    posicionReal = index + 1;
+                    const data = {
+                      action: "guardarPosicion",
+                      posicion: posicionReal,
+                      clave: clave
+                    };
+                    const tag = document.createElement('div');
+                    tag.id = "mensaje-a-extension";
+                    tag.setAttribute('data-msg', JSON.stringify(data));
+                    document.body.appendChild(tag);
+                    link.click();
+                  }
+                });
+
+                if (posicionReal === null) {
+                  console.log("No se encontró el dominio en resultados orgánicos:", dominio);
+                }
+              }, 3000);
+            }
+          });
+
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: () => {
+              const observer = new MutationObserver(() => {
+                const tag = document.getElementById("mensaje-a-extension");
+                if (tag) {
+                  const data = JSON.parse(tag.getAttribute("data-msg"));
+                  chrome.runtime.sendMessage(data);
+                  tag.remove();
                 }
               });
 
-              if (posicionReal === null) {
-                console.log("No se encontró el dominio en resultados orgánicos:", dominio);
-              }
-            }, 3000);
-          }
-        });
-        chrome.tabs.onUpdated.removeListener(listener);
+              observer.observe(document.body, { childList: true });
+            }
+          });
+        }, delay);
       }
     });
   });
