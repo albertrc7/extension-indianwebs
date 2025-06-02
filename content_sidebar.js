@@ -6,7 +6,8 @@ if (!document.getElementById("indianwebs-sidebar")) {
   sidebar.style.right = "0";
   sidebar.style.width = "360px";
   sidebar.style.height = "100%";
-  sidebar.style.background = "rgb(255, 255, 255)";
+  sidebar.style.background = "linear-gradient(0deg, rgba(131,204,255,1) 0.4%, rgb(139, 243, 250) 100.3%)";
+
   sidebar.style.boxShadow = "-4px 0 12px rgba(0,0,0,0.1)";
   sidebar.style.zIndex = "999999";
   sidebar.style.padding = "20px";
@@ -42,8 +43,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
       margin: 10px 0;
       border-radius: 10px;
       box-shadow: 0 2px 10px rgba(0,0,0,0.15);
-      border: 1px solid #ddd;
-    " />
+      " />
 
     <h1 style="
       font-size: 24px;
