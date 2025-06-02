@@ -72,7 +72,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
       caret-color: white !important;
     " />
 
-    <input id="dominio" type="text" placeholder="Dominio objetivo (ej: indianwebs.com)" value="indianwebs.com" style="
+    <input id="dominio" type="text" placeholder="Dominio objetivo (ej: indianwebs.com)" style="
       width: 100%;
       max-width: 280px;
       padding: 10px;
@@ -136,19 +136,19 @@ if (!document.getElementById("indianwebs-sidebar")) {
       ">🗑️</button>
       </div>
       <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
-      <button id="exportar-pdf" style="
-  background-color: #6b7280;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 6px 12px;
-  font-size: 13px;
-  cursor: pointer;
-  margin-top: 12px;
-">📄 Exportar historial a PDF</button>
-
+     
       </div>
 
+      <button id="exportar-pdf" style="
+        background-color: #6b7280;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 12px;
+      ">📄 Exportar historial a PDF</button>
 
     <div id="cta-seo" style="
       position: absolute;
