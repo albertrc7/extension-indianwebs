@@ -53,7 +53,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
       margin-bottom: 16px;
       letter-spacing: 1px;
       text-align: center;
-    ">Buscador de IndianWebs</h1>
+    ">BeFound®</h1>
 
     <input id="busqueda" type="text" placeholder="Escribe tu búsqueda..." style="
       width: 100%;
