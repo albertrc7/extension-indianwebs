@@ -254,19 +254,14 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
 document.getElementById("iniciar").addEventListener("click", () => {
   const query = document.getElementById("busqueda").value.trim();
   const dominio = document.getElementById("dominio").value.trim();
+
   if (!query || !dominio) {
     alert("Debes introducir tanto una búsqueda como un dominio.");
     return;
   }
 
   const clave = `${query}_${dominio}_${Date.now()}`;
-  const nuevaEntrada = {
-    query,
-    dominio,
-    clave,
-    posicion: "cargando",
-    fecha: Date.now()
-  };
+  const fecha = Date.now();
 
   document.getElementById("sidebar-posiciones").innerHTML = `
     <span id="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px;"></span>
@@ -277,7 +272,7 @@ document.getElementById("iniciar").addEventListener("click", () => {
 
   chrome.storage.local.get(["historialBusquedas"], (data) => {
     const historial = data.historialBusquedas || [];
-    historial.unshift(nuevaEntrada);
+    historial.unshift({ query, dominio, clave, posicion: "cargando", fecha });
     const nuevoHistorial = historial.slice(0, 10);
     chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
       renderizarHistorial(nuevoHistorial);
@@ -287,23 +282,14 @@ document.getElementById("iniciar").addEventListener("click", () => {
   setTimeout(() => {
     chrome.storage.local.get(["historialBusquedas"], (data) => {
       let historial = data.historialBusquedas || [];
-      let encontrado = false;
-      historial = historial.map(item => {
-        if (item.clave === clave) {
-          if (item.posicion === "cargando") {
-            return { ...item, posicion: "NoEncontrado" };
-          } else {
-            encontrado = true;
-          }
-        }
-        return item;
+      historial = historial.map(item =>
+        item.clave === clave && item.posicion === "cargando"
+          ? { ...item, posicion: "NoEncontrado" }
+          : item
+      );
+      chrome.storage.local.set({ historialBusquedas: historial }, () => {
+        renderizarHistorial(historial);
       });
-
-      if (!encontrado) {
-        chrome.storage.local.set({ historialBusquedas: historial }, () => {
-          renderizarHistorial(historial);
-        });
-      }
     });
   }, 30000);
 });
@@ -325,6 +311,56 @@ chrome.runtime.onMessage.addListener((message) => {
       posDiv.innerHTML = `👉 <strong>Resultado:</strong> Posición <strong>${message.posiciones[message.clave]}</strong><br>`;
     }
   }
+});
+
+document.getElementById("exportar-pdf").addEventListener("click", () => {
+  chrome.storage.local.get(["historialBusquedas"], (data) => {
+    const historial = data.historialBusquedas || [];
+
+    const htmlContent = `
+      <html>
+        <head>
+          <title>Historial de búsquedas</title>
+          <style>
+            body { font-family: Arial, sans-serif; padding: 20px; }
+            h1 { font-size: 20px; }
+            table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+            th { background-color: #f0f0f0; }
+          </style>
+        </head>
+        <body>
+          <h1>Historial de búsquedas</h1>
+          <table>
+            <tr>
+              <th>Consulta</th>
+              <th>Dominio</th>
+              <th>Resultado</th>
+              <th>Fecha</th>
+            </tr>
+            ${historial.map(item => `
+              <tr>
+                <td>${item.query}</td>
+                <td>${item.dominio}</td>
+                <td>${item.posicion || '–'}</td>
+                <td>${item.fecha ? new Date(item.fecha).toLocaleString() : ''}</td>
+              </tr>
+            `).join('')}
+          </table>
+        </body>
+      </html>
+    `;
+
+    const printWindow = window.open('', '_blank', 'width=800,height=600');
+    if (printWindow) {
+      printWindow.document.write(htmlContent);
+      printWindow.document.close();
+      printWindow.focus();
+      setTimeout(() => printWindow.print(), 300);
+    } else {
+      alert("No se pudo abrir la ventana de impresión. Desactiva el bloqueador de ventanas emergentes.");
+    }
+  });
 });
 
 function renderizarHistorial(historial) {
@@ -358,19 +394,17 @@ function renderizarHistorial(historial) {
       document.getElementById("busqueda").value = query;
       document.getElementById("dominio").value = dominio;
       const nuevaClave = `${query}_${dominio}_${Date.now()}`;
-      const nuevaEntrada = {
+
+      chrome.runtime.sendMessage({
+        action: "iniciarBusqueda",
         query,
         dominio,
-        clave: nuevaClave,
-        posicion: "cargando",
-        fecha: Date.now()
-      };
-
-      chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio, clave: nuevaClave });
+        clave: nuevaClave
+      });
 
       chrome.storage.local.get(["historialBusquedas"], (data) => {
         const historial = data.historialBusquedas || [];
-        historial.unshift(nuevaEntrada);
+        historial.unshift({ query, dominio, clave: nuevaClave, posicion: "cargando", fecha: Date.now() });
         const nuevoHistorial = historial.slice(0, 10);
         chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
           renderizarHistorial(nuevoHistorial);
