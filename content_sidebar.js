@@ -317,16 +317,30 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
   chrome.storage.local.get(["historialBusquedas"], (data) => {
     const historial = data.historialBusquedas || [];
 
+    const getColor = (pos) => {
+      const num = parseInt(pos);
+      if (!isNaN(num)) {
+        if (num >= 1 && num <= 5) return "#22c55e";    // verde
+        if (num >= 6 && num <= 20) return "#eab308";   // amarillo
+        if (num >= 21 && num <= 100) return "#6b7280"; // gris
+      }
+      return "#ef4444"; // rojo para "No Encontrado"
+    };
+
     const htmlContent = `
       <html>
         <head>
           <title>Historial de búsquedas</title>
           <style>
             body { font-family: Arial, sans-serif; padding: 20px; }
-            h1 { font-size: 20px; }
+            h1 { font-size: 20px; text-align: center; }
             table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-            th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+            th, td { border: 1px solid #ccc; padding: 8px; }
             th { background-color: #f0f0f0; }
+            td:nth-child(3), th:nth-child(3),
+            td:nth-child(4), th:nth-child(4) {
+              text-align: center;
+            }
           </style>
         </head>
         <body>
@@ -335,17 +349,21 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
             <tr>
               <th>Consulta</th>
               <th>Dominio</th>
-              <th>Resultado</th>
+              <th>Posición</th>
               <th>Fecha</th>
             </tr>
-            ${historial.map(item => `
-              <tr>
-                <td>${item.query}</td>
-                <td>${item.dominio}</td>
-                <td>${item.posicion || '–'}</td>
-                <td>${item.fecha ? new Date(item.fecha).toLocaleString() : ''}</td>
-              </tr>
-            `).join('')}
+            ${historial.map(item => {
+              const textoPos = item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–');
+              const color = getColor(textoPos);
+              return `
+                <tr>
+                  <td>${item.query}</td>
+                  <td>${item.dominio}</td>
+                  <td style="color: ${color}; font-weight: bold;">${textoPos}</td>
+                  <td>${item.fecha ? new Date(item.fecha).toLocaleDateString() : ''}</td>
+                </tr>
+              `;
+            }).join('')}
           </table>
         </body>
       </html>
@@ -363,6 +381,7 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
   });
 });
 
+
 function renderizarHistorial(historial) {
   const lista = document.getElementById("historial-lista");
   lista.innerHTML = "";
@@ -370,7 +389,19 @@ function renderizarHistorial(historial) {
   historial.forEach(({ query, dominio, posicion, clave, fecha }) => {
     const li = document.createElement("li");
     li.style.marginBottom = "10px";
-    const fechaStr = fecha ? new Date(fecha).toLocaleString() : "";
+    const fechaStr = fecha ? new Date(fecha).toLocaleDateString() : "";
+
+    let color = "";
+    if (!isNaN(posicion)) {
+      const num = parseInt(posicion);
+      if (num >= 1 && num <= 5) {
+        color = "green";
+      } else if (num >= 6 && num <= 20) {
+        color = "orange";
+      } else if (num >= 21 && num <= 100) {
+        color = "gray";
+      }
+    }
 
     li.innerHTML = `
       <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
@@ -384,7 +415,7 @@ function renderizarHistorial(historial) {
           : posicion === 'NoEncontrado'
             ? `<div style="font-size: 16px; color: red; margin-left: 10px;"><span style="color: red; font-size:12px;">#NoEncontrado</span></div>`
             : posicion !== null
-              ? `<div style="font-size: 12px; color: #2563eb; margin-left: 10px; white-space: nowrap;">#${posicion}</div>`
+              ? `<div style="font-size: 12px; color: ${color}; margin-left: 10px; white-space: nowrap;">#${posicion}</div>`
               : ""}
       </div>
     `;
@@ -429,6 +460,4 @@ function renderizarHistorial(historial) {
     lista.appendChild(li);
   });
 }
-
-
 }
