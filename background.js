@@ -1,10 +1,11 @@
+
 let posiciones = {};
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "iniciarBusqueda") {
-    const { query, dominio, clave } = message;
+    const { query, dominio, clave, pais } = message;
     posiciones[clave] = null;
-    abrirBusqueda(query, clave, dominio);
+    abrirBusqueda(query, clave, dominio, pais);
   }
 
   if (message.action === "guardarPosicion") {
@@ -67,18 +68,17 @@ chrome.action.onClicked.addListener((tab) => {
   }, 500);
 });
 
-function abrirBusqueda(query, clave, dominioObjetivo) {
-  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100`;
+function abrirBusqueda(query, clave, dominioObjetivo, pais = "us", idioma = "en") {
+  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100&gl=${pais}&hl=${idioma}`;
 
   chrome.tabs.create({ url: url, active: false }, (tab) => {
     chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
       if (tabId === tab.id && info.status === 'complete') {
         chrome.tabs.onUpdated.removeListener(listener);
 
-        const delay = Math.floor(Math.random() * 1000); // anticolapso
+        const delay = Math.floor(Math.random() * 1000);
 
         setTimeout(() => {
-          // Revisa cada 100ms si hay resultados útiles
           chrome.scripting.executeScript({
             target: { tabId: tab.id },
             args: [clave, dominioObjetivo],
@@ -114,7 +114,6 @@ function abrirBusqueda(query, clave, dominioObjetivo) {
             }
           });
 
-          // Inyectar listener para recibir datos desde el DOM
           chrome.scripting.executeScript({
             target: { tabId: tab.id },
             func: () => {

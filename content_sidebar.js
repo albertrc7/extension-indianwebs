@@ -85,6 +85,51 @@ if (!document.getElementById("indianwebs-sidebar")) {
       outline: none !important;
     " />
 
+    <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%; max-width: 280px; margin-bottom: 12px;">
+  <div style="flex: 1;">
+    <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
+    <select id="pais" style="
+      width: 100%;
+      padding: 6px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background-color: #111;
+      color: white;
+      outline: none;
+    ">
+      <option value="us">🇺🇸 United States</option>
+      <option value="es" selected>🇪🇸 España</option>
+      <option value="fr">🇫🇷 France</option>
+      <option value="de">🇩🇪 Germany</option>
+      <option value="mx">🇲🇽 Mexico</option>
+      <option value="ar">🇦🇷 Argentina</option>
+      <option value="br">🇧🇷 Brazil</option>
+    </select>
+  </div>
+  <div style="flex: 1;">
+    <label for="idioma" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">Idioma:</label>
+    <select id="idioma" style="
+      width: 100%;
+      padding: 6px;
+      font-size: 12px;
+      border-radius: 6px;
+      border: 1px solid #333;
+      background-color: #111;
+      color: white;
+      outline: none;
+    ">
+      <option value="en">🇬🇧 English</option>
+      <option value="es" selected>🇪🇸 Español</option>
+      <option value="fr">🇫🇷 Français</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="pt">🇧🇷 Português</option>
+      <option value="it">🇮🇹 Italiano</option>
+    </select>
+  </div>
+</div>
+
+
     <button id="iniciar" style="
       background-color: #2563eb;
       color: white;
@@ -98,19 +143,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
       transition: background-color 0.3s ease, transform 0.2s ease;
     ">Iniciar búsqueda</button>
 
-    <div class="card" style="
-      background: #ffffffc0;
-      border-radius: 10px;
-      padding: 16px 20px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-      width: 100%;
-      max-width: 280px;
-      text-align: center;
-      transition: all 0.3s ease-in-out;
-    ">
-      <h2 style="margin-top: 0;">Resultados:</h2>
-      <div id="sidebar-posiciones" style="font-size: 14px; color: #374151; margin-top: 8px;">👉 <strong>Resultado:</strong> Aún sin resultado<br></div>
-    </div>
+   
 
    <div id="historial" style="
   flex-grow: 1;
@@ -254,6 +287,9 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
 document.getElementById("iniciar").addEventListener("click", () => {
   const query = document.getElementById("busqueda").value.trim();
   const dominio = document.getElementById("dominio").value.trim();
+  const pais = document.getElementById("pais").value;
+  const idioma = document.getElementById("idioma").value;
+
 
   if (!query || !dominio) {
     alert("Debes introducir tanto una búsqueda como un dominio.");
@@ -263,16 +299,14 @@ document.getElementById("iniciar").addEventListener("click", () => {
   const clave = `${query}_${dominio}_${Date.now()}`;
   const fecha = Date.now();
 
-  document.getElementById("sidebar-posiciones").innerHTML = `
-    <span id="loading-spinner" style="display: inline-block; width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite; margin-right: 8px;"></span>
-    <span id="loading-text">Buscando posición...</span>
-  `;
+   
+    chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio, clave, pais, idioma });
 
-  chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio, clave });
+
 
   chrome.storage.local.get(["historialBusquedas"], (data) => {
     const historial = data.historialBusquedas || [];
-    historial.unshift({ query, dominio, clave, posicion: "cargando", fecha });
+    historial.unshift({ query, dominio, clave, posicion: "cargando", fecha, pais, idioma });
     const nuevoHistorial = historial.slice(0, 10);
     chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
       renderizarHistorial(nuevoHistorial);
@@ -291,7 +325,7 @@ document.getElementById("iniciar").addEventListener("click", () => {
         renderizarHistorial(historial);
       });
     });
-  }, 30000);
+  }, 5000);
 });
 
 chrome.runtime.onMessage.addListener((message) => {
@@ -386,7 +420,7 @@ function renderizarHistorial(historial) {
   const lista = document.getElementById("historial-lista");
   lista.innerHTML = "";
 
-  historial.forEach(({ query, dominio, posicion, clave, fecha }) => {
+  historial.forEach(({ query, dominio, posicion, clave, fecha, pais, idioma }) => {
     const li = document.createElement("li");
     li.style.marginBottom = "10px";
     const fechaStr = fecha ? new Date(fecha).toLocaleDateString() : "";
@@ -403,12 +437,14 @@ function renderizarHistorial(historial) {
       }
     }
 
+    const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
+
     li.innerHTML = `
       <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
         <div>
           🔍 <strong>${query}</strong><br>
           <small style="color: #555">${dominio}</small><br>
-          <small style="color: #999; font-size: 11px;">${fechaStr}</small>
+          <small style="color: #999; font-size: 11px;">${fechaStr} – ${paisIdiomaStr}</small>
         </div>
         ${posicion === 'cargando'
           ? `<div style="width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div>`
@@ -425,17 +461,29 @@ function renderizarHistorial(historial) {
       document.getElementById("busqueda").value = query;
       document.getElementById("dominio").value = dominio;
       const nuevaClave = `${query}_${dominio}_${Date.now()}`;
+      const pais = document.getElementById("pais").value;
+      const idioma = document.getElementById("idioma").value;
 
       chrome.runtime.sendMessage({
         action: "iniciarBusqueda",
         query,
         dominio,
-        clave: nuevaClave
+        clave: nuevaClave,
+        pais,
+        idioma
       });
 
       chrome.storage.local.get(["historialBusquedas"], (data) => {
         const historial = data.historialBusquedas || [];
-        historial.unshift({ query, dominio, clave: nuevaClave, posicion: "cargando", fecha: Date.now() });
+        historial.unshift({
+          query,
+          dominio,
+          clave: nuevaClave,
+          posicion: "cargando",
+          fecha: Date.now(),
+          pais,
+          idioma
+        });
         const nuevoHistorial = historial.slice(0, 10);
         chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
           renderizarHistorial(nuevoHistorial);
@@ -454,10 +502,11 @@ function renderizarHistorial(historial) {
             renderizarHistorial(historial);
           });
         });
-      }, 30000);
+      }, 5000);
     });
 
     lista.appendChild(li);
   });
 }
+
 }
