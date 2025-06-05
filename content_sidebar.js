@@ -115,8 +115,8 @@ if (!document.getElementById("indianwebs-sidebar")) {
         font-size: 12px;
         border-radius: 6px;
         border: 1px solid #333;
-        background-color: #111;
-        color: white;
+        background-color: white;
+        color: black;
         outline: none;
       ">
         <option value="us">🇺🇸 United States</option>
@@ -136,8 +136,8 @@ if (!document.getElementById("indianwebs-sidebar")) {
         font-size: 12px;
         border-radius: 6px;
         border: 1px solid #333;
-        background-color: #111;
-        color: white;
+        background-color: white;
+        color: black;
         outline: none;
       ">
         <option value="en">🇬🇧 English</option>
@@ -160,6 +160,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
   color: #444;
   margin-top: 20px;
   padding-bottom: 80px; /* para evitar que se tape con el CTA fijo abajo */
+  padding-right: 10px;
   box-sizing: border-box;
 ">
     <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -262,6 +263,24 @@ if (!document.getElementById("indianwebs-sidebar")) {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
+ 
+  #historial::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  #historial::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  #historial::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+  }
+
+  #historial::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+    
   `;
   sidebar.appendChild(css);
 
