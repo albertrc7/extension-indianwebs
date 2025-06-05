@@ -85,52 +85,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
       outline: none !important;
     " />
 
-    <div style="display: flex; justify-content: space-between; gap: 10px; width: 100%; max-width: 280px; margin-bottom: 12px;">
-  <div style="flex: 1;">
-    <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
-    <select id="pais" style="
-      width: 100%;
-      padding: 6px;
-      font-size: 12px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background-color: #111;
-      color: white;
-      outline: none;
-    ">
-      <option value="us">🇺🇸 United States</option>
-      <option value="es" selected>🇪🇸 España</option>
-      <option value="fr">🇫🇷 France</option>
-      <option value="de">🇩🇪 Germany</option>
-      <option value="mx">🇲🇽 Mexico</option>
-      <option value="ar">🇦🇷 Argentina</option>
-      <option value="br">🇧🇷 Brazil</option>
-    </select>
-  </div>
-  <div style="flex: 1;">
-    <label for="idioma" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">Idioma:</label>
-    <select id="idioma" style="
-      width: 100%;
-      padding: 6px;
-      font-size: 12px;
-      border-radius: 6px;
-      border: 1px solid #333;
-      background-color: #111;
-      color: white;
-      outline: none;
-    ">
-      <option value="en">🇬🇧 English</option>
-      <option value="es" selected>🇪🇸 Español</option>
-      <option value="fr">🇫🇷 Français</option>
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="pt">🇧🇷 Português</option>
-      <option value="it">🇮🇹 Italiano</option>
-    </select>
-  </div>
-</div>
-
-
-    <button id="iniciar" style="
+   <button id="iniciar" style="
       background-color: #2563eb;
       color: white;
       border: none;
@@ -143,8 +98,59 @@ if (!document.getElementById("indianwebs-sidebar")) {
       transition: background-color 0.3s ease, transform 0.2s ease;
     ">Iniciar búsqueda</button>
 
-   
 
+
+    <div id="opciones-toggle" style="width: 100%; max-width: 280px; margin-bottom: 8px; cursor: pointer; font-size: 13px; color: #000; display: flex; align-items: center; justify-content: space-between;">
+  <span><strong>Más opciones</strong></span>
+  <span id="flecha-toggle">▼</span>
+</div>
+
+<div id="opciones-avanzadas" style="display: none; width: 100%; max-width: 280px; margin-bottom: 12px;">
+  <div style="display: flex; justify-content: space-between; gap: 10px;">
+    <div style="flex: 1;">
+      <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
+      <select id="pais" style="
+        width: 100%;
+        padding: 6px;
+        font-size: 12px;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background-color: #111;
+        color: white;
+        outline: none;
+      ">
+        <option value="us">🇺🇸 United States</option>
+        <option value="es" selected>🇪🇸 España</option>
+        <option value="fr">🇫🇷 France</option>
+        <option value="de">🇩🇪 Germany</option>
+        <option value="mx">🇲🇽 Mexico</option>
+        <option value="ar">🇦🇷 Argentina</option>
+        <option value="br">🇧🇷 Brazil</option>
+      </select>
+    </div>
+    <div style="flex: 1;">
+      <label for="idioma" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">Idioma:</label>
+      <select id="idioma" style="
+        width: 100%;
+        padding: 6px;
+        font-size: 12px;
+        border-radius: 6px;
+        border: 1px solid #333;
+        background-color: #111;
+        color: white;
+        outline: none;
+      ">
+        <option value="en">🇬🇧 English</option>
+        <option value="es" selected>🇪🇸 Español</option>
+        <option value="fr">🇫🇷 Français</option>
+        <option value="de">🇩🇪 Deutsch</option>
+        <option value="pt">🇧🇷 Português</option>
+        <option value="it">🇮🇹 Italiano</option>
+      </select>
+    </div>
+  </div>
+</div>
+ 
    <div id="historial" style="
   flex-grow: 1;
   overflow-y: auto;
@@ -171,6 +177,8 @@ if (!document.getElementById("indianwebs-sidebar")) {
      
       </div>
 
+
+      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
       <button id="exportar-pdf" style="
         background-color: #6b7280;
         color: white;
@@ -182,6 +190,19 @@ if (!document.getElementById("indianwebs-sidebar")) {
         margin-top: 12px;
       ">📄 Exportar historial a PDF</button>
 
+      <button id="exportar-csv" style="
+        background-color: #10b981;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 6px 12px;
+        font-size: 13px;
+        cursor: pointer;
+        margin-top: 8px;
+      ">📁 Exportar historial a CSV</button>
+
+      
+      </div>
     <div id="cta-seo" style="
       position: absolute;
       bottom: 0;
@@ -245,6 +266,16 @@ if (!document.getElementById("indianwebs-sidebar")) {
   sidebar.appendChild(css);
 
   document.body.appendChild(sidebar);
+
+  document.getElementById("opciones-toggle").addEventListener("click", () => {
+  const opciones = document.getElementById("opciones-avanzadas");
+  const flecha = document.getElementById("flecha-toggle");
+  const visible = opciones.style.display === "block";
+
+  opciones.style.display = visible ? "none" : "block";
+  flecha.textContent = visible ? "▼" : "▲";
+});
+
 
   // Cargar historial al iniciar sin esperar a búsqueda
   chrome.storage.local.get(["historialBusquedas"], (data) => {
@@ -325,7 +356,7 @@ document.getElementById("iniciar").addEventListener("click", () => {
         renderizarHistorial(historial);
       });
     });
-  }, 5000);
+  }, 10000);
 });
 
 chrome.runtime.onMessage.addListener((message) => {
@@ -346,6 +377,38 @@ chrome.runtime.onMessage.addListener((message) => {
     }
   }
 });
+
+document.getElementById("exportar-csv").addEventListener("click", () => {
+  chrome.storage.local.get(["historialBusquedas"], (data) => {
+    const historial = data.historialBusquedas || [];
+
+    let csvContent = `"Consulta";"Dominio";"Posición";"Fecha";"País";"Idioma"\n`;
+
+    historial.forEach(item => {
+      const query = `"${item.query}"`;
+      const dominio = `"${item.dominio}"`;
+      const posicion = `"${item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–')}"`;
+      const fecha = `"${item.fecha ? new Date(item.fecha).toLocaleDateString() : ''}"`;
+      const pais = `"${item.pais?.toUpperCase() || ''}"`;
+      const idioma = `"${item.idioma?.toLowerCase() || ''}"`;
+      csvContent += `${query};${dominio};${posicion};${fecha};${pais};${idioma}\n`;
+
+    });
+
+    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "historial.csv");
+    link.style.display = "none";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  });
+});
+
+
 
 document.getElementById("exportar-pdf").addEventListener("click", () => {
   chrome.storage.local.get(["historialBusquedas"], (data) => {
@@ -457,38 +520,41 @@ function renderizarHistorial(historial) {
     `;
 
     li.querySelector(".historial-item").addEventListener("click", (e) => {
-      e.preventDefault();
-      document.getElementById("busqueda").value = query;
-      document.getElementById("dominio").value = dominio;
-      const nuevaClave = `${query}_${dominio}_${Date.now()}`;
-      const pais = document.getElementById("pais").value;
-      const idioma = document.getElementById("idioma").value;
+       e.preventDefault();
+        document.getElementById("busqueda").value = query;
+        document.getElementById("dominio").value = dominio;
 
-      chrome.runtime.sendMessage({
-        action: "iniciarBusqueda",
-        query,
-        dominio,
-        clave: nuevaClave,
-        pais,
-        idioma
-      });
+        // Rellenar los select también:
+        document.getElementById("pais").value = pais;
+        document.getElementById("idioma").value = idioma;
 
-      chrome.storage.local.get(["historialBusquedas"], (data) => {
-        const historial = data.historialBusquedas || [];
-        historial.unshift({
+        const nuevaClave = `${query}_${dominio}_${Date.now()}`;
+
+        chrome.runtime.sendMessage({
+          action: "iniciarBusqueda",
           query,
           dominio,
           clave: nuevaClave,
-          posicion: "cargando",
-          fecha: Date.now(),
           pais,
           idioma
         });
-        const nuevoHistorial = historial.slice(0, 10);
-        chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
-          renderizarHistorial(nuevoHistorial);
+
+        chrome.storage.local.get(["historialBusquedas"], (data) => {
+          const historial = data.historialBusquedas || [];
+          historial.unshift({
+            query,
+            dominio,
+            clave: nuevaClave,
+            posicion: "cargando",
+            fecha: Date.now(),
+            pais,
+            idioma
+          });
+          const nuevoHistorial = historial.slice(0, 10);
+          chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
+            renderizarHistorial(nuevoHistorial);
+          });
         });
-      });
 
       setTimeout(() => {
         chrome.storage.local.get(["historialBusquedas"], (data) => {
@@ -502,7 +568,7 @@ function renderizarHistorial(historial) {
             renderizarHistorial(historial);
           });
         });
-      }, 5000);
+      }, 10000);
     });
 
     lista.appendChild(li);

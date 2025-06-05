@@ -3,9 +3,9 @@ let posiciones = {};
 
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === "iniciarBusqueda") {
-    const { query, dominio, clave, pais } = message;
+    const { query, dominio, clave, pais, idioma } = message;
     posiciones[clave] = null;
-    abrirBusqueda(query, clave, dominio, pais);
+    abrirBusqueda(query, clave, dominio, pais, idioma);
   }
 
   if (message.action === "guardarPosicion") {
@@ -70,6 +70,7 @@ chrome.action.onClicked.addListener((tab) => {
 
 function abrirBusqueda(query, clave, dominioObjetivo, pais = "us", idioma = "en") {
   const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100&gl=${pais}&hl=${idioma}`;
+
 
   chrome.tabs.create({ url: url, active: false }, (tab) => {
     chrome.tabs.onUpdated.addListener(function listener(tabId, info) {
