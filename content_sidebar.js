@@ -19,7 +19,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
   sidebar.style.flexDirection = "column";
   sidebar.style.alignItems = "center";
   sidebar.style.boxSizing = "border-box";
-  sidebar.style.paddingBottom = "100px";
+  sidebar.style.paddingBottom = "40px";
 
   sidebar.innerHTML = `
     <button id="cerrar-sidebar" style="
@@ -64,11 +64,11 @@ if (!document.getElementById("indianwebs-sidebar")) {
       margin-bottom: 12px;
       font-size: 14px;
       box-sizing: border-box;
-      background-color: #111 !important;
-      color: white !important;
+      background-color: #fff !important;
+      color: #333 !important;
       outline: none !important;
-      box-shadow: inset 0 0 0px 1000px #111 !important;
-      caret-color: white !important;
+      box-shadow: inset 0 0 0px 1000px #fff !important;
+      caret-color: #333 !important;
     " />
 
     <input id="dominio" type="text" placeholder="Dominio objetivo (ej: indianwebs.com)" style="
@@ -80,9 +80,11 @@ if (!document.getElementById("indianwebs-sidebar")) {
       margin-bottom: 12px;
       font-size: 14px;
       box-sizing: border-box;
-      background-color: #111 !important;
-      color: white !important;
+      background-color: #fff !important;
+      box-shadow: inset 0 0 0px 1000px #fff !important;
+      color: #333 !important;
       outline: none !important;
+      caret-color: #333 !important;
     " />
 
    <button id="iniciar" style="
@@ -105,7 +107,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
   <span id="flecha-toggle">▼</span>
 </div>
 
-<div id="opciones-avanzadas" style="display: none; width: 100%; max-width: 280px; margin-bottom: 12px;">
+<div id="opciones-avanzadas" style="width: 100%; max-width: 280px; margin-bottom: 12px;">
   <div style="display: flex; justify-content: space-between; gap: 10px;">
     <div style="flex: 1;">
       <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
@@ -151,32 +153,49 @@ if (!document.getElementById("indianwebs-sidebar")) {
   </div>
 </div>
  
-   <div id="historial" style="
-  flex-grow: 1;
-  overflow-y: auto;
+ 
+<!-- Bloque contenedor del historial -->
+<div id="bloque-historial" style="
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(6px);
+  border-radius: 16px;
+  padding: 16px 14px;
+  margin: 10px
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
   width: 100%;
-  max-width: 280px;
-  font-size: 13px;
-  color: #444;
+  max-width: 300px;
   margin-top: 20px;
-  padding-bottom: 80px; /* para evitar que se tape con el CTA fijo abajo */
-  padding-right: 10px;
-  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 ">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-      <h3 style="margin: 0; font-size: 15px;">Historial</h3>
-      <button id="borrar-historial" style="
-        background: transparent;
-        color: #888;
-        border: none;
-        font-size: 16px;
-        padding: 3px;
-        cursor: pointer;
-      ">🗑️</button>
-      </div>
-      <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
-     
-      </div>
+
+  <!-- Cabecera -->
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111;">Historial</h3>
+    <button id="borrar-historial" style="
+      background: transparent;
+      color: #333;
+      border: none;
+      font-size: 18px;
+      padding: 3px;
+      cursor: pointer;
+    ">🗑️</button>
+  </div>
+
+  <!-- Lista de historial -->
+  <div id="historial" style="
+    overflow-y: auto;
+    width: 100%;
+    max-height: 250px;
+    padding-right: 4px;
+    padding-top: 10px;
+  ">
+    <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
+  </div>
+</div>
+
 
 
       <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
@@ -236,49 +255,135 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
   const css = document.createElement("style");
   css.textContent = `
-    ::placeholder {
-      color: #ccc !important;
-      opacity: 1 !important;
-    }
-    input:-webkit-autofill {
-      background-color: #111 !important;
-      color: white !important;
-      box-shadow: inset 0 0 0px 1000px #111 !important;
-      -webkit-text-fill-color: white !important;
-      caret-color: white !important;
-    }
-    .historial-item {
-      background: #f0f0f0;
-      padding: 10px 12px;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      color: #111;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    .historial-item:hover {
-      background: #e2e2e2;
-    }
-    @keyframes spin {
+   input {
+    width: 100%;
+    max-width: 280px;
+    padding: 10px 14px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    background-color: #fff !important;
+    color: #333 !important;
+    caret-color: #2563eb;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
+  }
+
+  input:hover {
+    border-color: #999;
+  }
+
+ 
+  ::placeholder {
+    color: #777 !important;
+    opacity: 1 !important;
+  }
+
+    
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+  background-color: #fff !important;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset !important;
+  box-shadow: 0 0 0px 1000px #fff inset !important;
+  -webkit-text-fill-color: #333 !important;
+  color: #333 !important;
+  caret-color: #2563eb !important;
+  transition: background-color 9999s ease-out, color 9999s ease-out;
+  }
+
+
+
+
+ #historial {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(4px);
+  border-radius: 12px;
+  padding: 0 8px 8px 8px; /* padding simétrico */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  max-height: 500px;
+  box-sizing: border-box;
+}
+
+#historial-lista {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  box-sizing: border-box;
+}
+
+
+ .historial-item {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 10px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  transition: all 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.historial-item:hover {
+  background: #f9fafb;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+ @keyframes spin {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
-    }
+  }
  
   #historial::-webkit-scrollbar {
-    width: 8px;
+     width: 6px;
   }
 
   #historial::-webkit-scrollbar-track {
-    background: transparent;
+     background: transparent;
+    border-radius: 4px;
   }
 
+  button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+button:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+    #opciones-avanzadas {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+  #opciones-avanzadas.abierto {
+    max-height: 400px;
+  }
+
+  
   #historial::-webkit-scrollbar-thumb {
-    background-color: rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
+    background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
   }
 
   #historial::-webkit-scrollbar-thumb:hover {
-    background-color: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.35);
   }
     
   `;
@@ -287,163 +392,144 @@ if (!document.getElementById("indianwebs-sidebar")) {
   document.body.appendChild(sidebar);
 
   document.getElementById("opciones-toggle").addEventListener("click", () => {
-  const opciones = document.getElementById("opciones-avanzadas");
-  const flecha = document.getElementById("flecha-toggle");
-  const visible = opciones.style.display === "block";
+    const opciones = document.getElementById("opciones-avanzadas");
+    const flecha = document.getElementById("flecha-toggle");
 
-  opciones.style.display = visible ? "none" : "block";
-  flecha.textContent = visible ? "▼" : "▲";
-});
+    opciones.classList.toggle("abierto");
+    const abierto = opciones.classList.contains("abierto");
+    flecha.textContent = abierto ? "▲" : "▼";
+  });
 
 
-  // Cargar historial al iniciar sin esperar a búsqueda
+
+  // Cargar historial al iniciar
   chrome.storage.local.get(["historialBusquedas"], (data) => {
     const historialGuardado = data.historialBusquedas || [];
     renderizarHistorial(historialGuardado);
   });
 
+  // Cerrar el sidebar
   document.getElementById("cerrar-sidebar").addEventListener("click", () => {
     sidebar.remove();
   });
 
-  // Mover botón de borrar historial fuera del contenedor y colocarlo a la derecha del título
-  const historialHeader = sidebar.querySelector("#historial h3");
-  const borrarBtn = document.getElementById("borrar-historial");
-  borrarBtn.style.marginTop = "0";
-  borrarBtn.style.background = "transparent";
-  borrarBtn.style.color = "#888";
-  borrarBtn.style.border = "none";
-  borrarBtn.style.fontSize = "16px";
-  borrarBtn.style.padding = "3";
-  borrarBtn.style.cursor = "pointer";
-  borrarBtn.style.marginLeft = "auto";
-  borrarBtn.innerHTML = "🗑️";
-  const headerContainer = document.createElement("div");
-  headerContainer.style.display = "flex";
-  headerContainer.style.justifyContent = "space-between";
-  headerContainer.style.alignItems = "center";
-  headerContainer.appendChild(historialHeader);
-  headerContainer.appendChild(borrarBtn);
-  sidebar.querySelector("#historial").insertBefore(headerContainer, sidebar.querySelector("#historial ul"));
-  historialHeader.style.margin = "0";
-  borrarBtn.style.marginRight = "0";
-
-document.getElementById("borrar-historial").addEventListener("click", () => {
-  chrome.storage.local.remove("historialBusquedas", () => {
-    renderizarHistorial([]);
+  // Borrar historial
+  document.getElementById("borrar-historial").addEventListener("click", () => {
+    chrome.storage.local.remove("historialBusquedas", () => {
+      renderizarHistorial([]);
+    });
   });
-});
 
-document.getElementById("iniciar").addEventListener("click", () => {
-  const query = document.getElementById("busqueda").value.trim();
-  const dominio = document.getElementById("dominio").value.trim();
-  const pais = document.getElementById("pais").value;
-  const idioma = document.getElementById("idioma").value;
+  document.getElementById("iniciar").addEventListener("click", () => {
+    const query = document.getElementById("busqueda").value.trim();
+    const dominio = document.getElementById("dominio").value.trim();
+    const pais = document.getElementById("pais").value;
+    const idioma = document.getElementById("idioma").value;
 
 
-  if (!query || !dominio) {
-    alert("Debes introducir tanto una búsqueda como un dominio.");
-    return;
-  }
+    if (!query || !dominio) {
+      alert("Debes introducir tanto una búsqueda como un dominio.");
+      return;
+    }
 
-  const clave = `${query}_${dominio}_${Date.now()}`;
-  const fecha = Date.now();
+    const clave = `${query}_${dominio}_${Date.now()}`;
+    const fecha = Date.now();
 
-   
+
     chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio, clave, pais, idioma });
 
 
 
-  chrome.storage.local.get(["historialBusquedas"], (data) => {
-    const historial = data.historialBusquedas || [];
-    historial.unshift({ query, dominio, clave, posicion: "cargando", fecha, pais, idioma });
-    const nuevoHistorial = historial.slice(0, 10);
-    chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
-      renderizarHistorial(nuevoHistorial);
-    });
-  });
-
-  setTimeout(() => {
     chrome.storage.local.get(["historialBusquedas"], (data) => {
-      let historial = data.historialBusquedas || [];
-      historial = historial.map(item =>
-        item.clave === clave && item.posicion === "cargando"
-          ? { ...item, posicion: "NoEncontrado" }
-          : item
-      );
-      chrome.storage.local.set({ historialBusquedas: historial }, () => {
-        renderizarHistorial(historial);
-      });
-    });
-  }, 10000);
-});
-
-chrome.runtime.onMessage.addListener((message) => {
-  if (message.action === "posicionesActualizadas" && message.clave) {
-    chrome.storage.local.get(["historialBusquedas"], (data) => {
-      let historial = data.historialBusquedas || [];
-      historial = historial.map(item =>
-        item.clave === message.clave ? { ...item, posicion: message.posiciones[message.clave] } : item
-      );
-      chrome.storage.local.set({ historialBusquedas: historial }, () => {
-        renderizarHistorial(historial);
+      const historial = data.historialBusquedas || [];
+      historial.unshift({ query, dominio, clave, posicion: "cargando", fecha, pais, idioma });
+      const nuevoHistorial = historial.slice(0, 10);
+      chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
+        renderizarHistorial(nuevoHistorial);
       });
     });
 
-    const posDiv = document.getElementById("sidebar-posiciones");
-    if (posDiv) {
-      posDiv.innerHTML = `👉 <strong>Resultado:</strong> Posición <strong>${message.posiciones[message.clave]}</strong><br>`;
-    }
-  }
-});
-
-document.getElementById("exportar-csv").addEventListener("click", () => {
-  chrome.storage.local.get(["historialBusquedas"], (data) => {
-    const historial = data.historialBusquedas || [];
-
-    let csvContent = `"Consulta";"Dominio";"Posición";"Fecha";"País";"Idioma"\n`;
-
-    historial.forEach(item => {
-      const query = `"${item.query}"`;
-      const dominio = `"${item.dominio}"`;
-      const posicion = `"${item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–')}"`;
-      const fecha = `"${item.fecha ? new Date(item.fecha).toLocaleDateString() : ''}"`;
-      const pais = `"${item.pais?.toUpperCase() || ''}"`;
-      const idioma = `"${item.idioma?.toLowerCase() || ''}"`;
-      csvContent += `${query};${dominio};${posicion};${fecha};${pais};${idioma}\n`;
-
-    });
-
-    const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", "historial.csv");
-    link.style.display = "none";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    setTimeout(() => {
+      chrome.storage.local.get(["historialBusquedas"], (data) => {
+        let historial = data.historialBusquedas || [];
+        historial = historial.map(item =>
+          item.clave === clave && item.posicion === "cargando"
+            ? { ...item, posicion: "NoEncontrado" }
+            : item
+        );
+        chrome.storage.local.set({ historialBusquedas: historial }, () => {
+          renderizarHistorial(historial);
+        });
+      });
+    }, 10000);
   });
-});
 
+  chrome.runtime.onMessage.addListener((message) => {
+    if (message.action === "posicionesActualizadas" && message.clave) {
+      chrome.storage.local.get(["historialBusquedas"], (data) => {
+        let historial = data.historialBusquedas || [];
+        historial = historial.map(item =>
+          item.clave === message.clave ? { ...item, posicion: message.posiciones[message.clave] } : item
+        );
+        chrome.storage.local.set({ historialBusquedas: historial }, () => {
+          renderizarHistorial(historial);
+        });
+      });
 
-
-document.getElementById("exportar-pdf").addEventListener("click", () => {
-  chrome.storage.local.get(["historialBusquedas"], (data) => {
-    const historial = data.historialBusquedas || [];
-
-    const getColor = (pos) => {
-      const num = parseInt(pos);
-      if (!isNaN(num)) {
-        if (num >= 1 && num <= 5) return "#22c55e";    // verde
-        if (num >= 6 && num <= 20) return "#eab308";   // amarillo
-        if (num >= 21 && num <= 100) return "#6b7280"; // gris
+      const posDiv = document.getElementById("sidebar-posiciones");
+      if (posDiv) {
+        posDiv.innerHTML = `👉 <strong>Resultado:</strong> Posición <strong>${message.posiciones[message.clave]}</strong><br>`;
       }
-      return "#ef4444"; // rojo para "No Encontrado"
-    };
+    }
+  });
 
-    const htmlContent = `
+  document.getElementById("exportar-csv").addEventListener("click", () => {
+    chrome.storage.local.get(["historialBusquedas"], (data) => {
+      const historial = data.historialBusquedas || [];
+
+      let csvContent = `"Consulta";"Dominio";"Posición";"Fecha";"País";"Idioma"\n`;
+
+      historial.forEach(item => {
+        const query = `"${item.query}"`;
+        const dominio = `"${item.dominio}"`;
+        const posicion = `"${item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–')}"`;
+        const fecha = `"${item.fecha ? new Date(item.fecha).toLocaleDateString() : ''}"`;
+        const pais = `"${item.pais?.toUpperCase() || ''}"`;
+        const idioma = `"${item.idioma?.toLowerCase() || ''}"`;
+        csvContent += `${query};${dominio};${posicion};${fecha};${pais};${idioma}\n`;
+
+      });
+
+      const blob = new Blob(["\uFEFF" + csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.setAttribute("href", url);
+      link.setAttribute("download", "historial.csv");
+      link.style.display = "none";
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  });
+
+
+
+  document.getElementById("exportar-pdf").addEventListener("click", () => {
+    chrome.storage.local.get(["historialBusquedas"], (data) => {
+      const historial = data.historialBusquedas || [];
+
+      const getColor = (pos) => {
+        const num = parseInt(pos);
+        if (!isNaN(num)) {
+          if (num >= 1 && num <= 5) return "#22c55e";    // verde
+          if (num >= 6 && num <= 20) return "#eab308";   // amarillo
+          if (num >= 21 && num <= 100) return "#6b7280"; // gris
+        }
+        return "#ef4444"; // rojo para "No Encontrado"
+      };
+
+      const htmlContent = `
       <html>
         <head>
           <title>Historial de búsquedas</title>
@@ -469,9 +555,9 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
               <th>Fecha</th>
             </tr>
             ${historial.map(item => {
-              const textoPos = item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–');
-              const color = getColor(textoPos);
-              return `
+        const textoPos = item.posicion === 'NoEncontrado' ? 'No Encontrado' : (item.posicion || '–');
+        const color = getColor(textoPos);
+        return `
                 <tr>
                   <td>${item.query}</td>
                   <td>${item.dominio}</td>
@@ -479,49 +565,49 @@ document.getElementById("exportar-pdf").addEventListener("click", () => {
                   <td>${item.fecha ? new Date(item.fecha).toLocaleDateString() : ''}</td>
                 </tr>
               `;
-            }).join('')}
+      }).join('')}
           </table>
         </body>
       </html>
     `;
 
-    const printWindow = window.open('', '_blank', 'width=800,height=600');
-    if (printWindow) {
-      printWindow.document.write(htmlContent);
-      printWindow.document.close();
-      printWindow.focus();
-      setTimeout(() => printWindow.print(), 300);
-    } else {
-      alert("No se pudo abrir la ventana de impresión. Desactiva el bloqueador de ventanas emergentes.");
-    }
-  });
-});
-
-
-function renderizarHistorial(historial) {
-  const lista = document.getElementById("historial-lista");
-  lista.innerHTML = "";
-
-  historial.forEach(({ query, dominio, posicion, clave, fecha, pais, idioma }) => {
-    const li = document.createElement("li");
-    li.style.marginBottom = "10px";
-    const fechaStr = fecha ? new Date(fecha).toLocaleDateString() : "";
-
-    let color = "";
-    if (!isNaN(posicion)) {
-      const num = parseInt(posicion);
-      if (num >= 1 && num <= 5) {
-        color = "green";
-      } else if (num >= 6 && num <= 20) {
-        color = "orange";
-      } else if (num >= 21 && num <= 100) {
-        color = "gray";
+      const printWindow = window.open('', '_blank', 'width=800,height=600');
+      if (printWindow) {
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
+        printWindow.focus();
+        setTimeout(() => printWindow.print(), 300);
+      } else {
+        alert("No se pudo abrir la ventana de impresión. Desactiva el bloqueador de ventanas emergentes.");
       }
-    }
+    });
+  });
 
-    const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
 
-    li.innerHTML = `
+  function renderizarHistorial(historial) {
+    const lista = document.getElementById("historial-lista");
+    lista.innerHTML = "";
+
+    historial.forEach(({ query, dominio, posicion, clave, fecha, pais, idioma }) => {
+      const li = document.createElement("li");
+      li.style.marginBottom = "10px";
+      const fechaStr = fecha ? new Date(fecha).toLocaleDateString() : "";
+
+      let color = "";
+      if (!isNaN(posicion)) {
+        const num = parseInt(posicion);
+        if (num >= 1 && num <= 5) {
+          color = "green";
+        } else if (num >= 6 && num <= 20) {
+          color = "orange";
+        } else if (num >= 21 && num <= 100) {
+          color = "gray";
+        }
+      }
+
+      const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
+
+      li.innerHTML = `
       <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
         <div>
           🔍 <strong>${query}</strong><br>
@@ -538,8 +624,8 @@ function renderizarHistorial(historial) {
       </div>
     `;
 
-    li.querySelector(".historial-item").addEventListener("click", (e) => {
-       e.preventDefault();
+      li.querySelector(".historial-item").addEventListener("click", (e) => {
+        e.preventDefault();
         document.getElementById("busqueda").value = query;
         document.getElementById("dominio").value = dominio;
 
@@ -575,23 +661,23 @@ function renderizarHistorial(historial) {
           });
         });
 
-      setTimeout(() => {
-        chrome.storage.local.get(["historialBusquedas"], (data) => {
-          let historial = data.historialBusquedas || [];
-          historial = historial.map(item =>
-            item.clave === nuevaClave && item.posicion === "cargando"
-              ? { ...item, posicion: "NoEncontrado" }
-              : item
-          );
-          chrome.storage.local.set({ historialBusquedas: historial }, () => {
-            renderizarHistorial(historial);
+        setTimeout(() => {
+          chrome.storage.local.get(["historialBusquedas"], (data) => {
+            let historial = data.historialBusquedas || [];
+            historial = historial.map(item =>
+              item.clave === nuevaClave && item.posicion === "cargando"
+                ? { ...item, posicion: "NoEncontrado" }
+                : item
+            );
+            chrome.storage.local.set({ historialBusquedas: historial }, () => {
+              renderizarHistorial(historial);
+            });
           });
-        });
-      }, 10000);
-    });
+        }, 10000);
+      });
 
-    lista.appendChild(li);
-  });
-}
+      lista.appendChild(li);
+    });
+  }
 
 }
