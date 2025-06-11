@@ -171,18 +171,32 @@ if (!document.getElementById("indianwebs-sidebar")) {
   gap: 10px;
 ">
 
-  <!-- Cabecera -->
-  <div style="display: flex; justify-content: space-between; align-items: center;">
-    <h3 style="margin: 0; font-size: 16px; font-weight: 600; color: #111;">Historial</h3>
-    <button id="borrar-historial" style="
-      background: transparent;
-      color: #333;
-      border: none;
-      font-size: 18px;
-      padding: 3px;
-      cursor: pointer;
-    ">🗑️</button>
-  </div>
+ <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
+  <h3 style="
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+    flex-grow: 1;
+  ">Historial</h3>
+  
+  <button id="borrar-historial" style="
+    background: transparent;
+    color: #2563eb;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+  ">🗑️</button>
+</div>
+
+
 
   <!-- Lista de historial -->
   <div id="historial" style="
@@ -198,59 +212,61 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
 
 
-      <div style="display: flex; justify-content: center; gap: 10px; margin-top: 12px;">
-      <button id="exportar-pdf" style="
-        background-color: #6b7280;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-size: 13px;
-        cursor: pointer;
-        margin-top: 12px;
-      ">📄 Exportar historial a PDF</button>
-
-      <button id="exportar-csv" style="
-        background-color: #10b981;
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 6px 12px;
-        font-size: 13px;
-        cursor: pointer;
-        margin-top: 8px;
-      ">📁 Exportar historial a CSV</button>
-
-      
-      </div>
-    <div id="cta-seo" style="
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      padding: 12px 16px;
-      background: #f9fafb;
-      border-top: 1px solid #ddd;
-      text-align: center;
+        
+<div id="cta-seo" style="
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: transparent; /* Fondo transparente para que se vea el fondo de la extensión */
+  text-align: center;
+  font-size: 13px;
+  color: #111;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+">
+  <!-- Botones de exportación colocados en la parte superior con fondo transparente -->
+  <div style="margin-bottom: 16px; width: 90%; display: flex; flex-direction: row; gap: 10px; background: transparent;">
+    <button id="exportar-pdf" style="
+      background-color: #6b7280;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
       font-size: 13px;
-      color: #111;
-      box-sizing: border-box;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    ">
-      <span style="margin-right: 8px;">¿Necesitas ayuda con el SEO?</span>
-      <a href="https://www.indianwebs.com" target="_blank" style="
-        background-color: #2563eb;
-        color: white;
-        text-decoration: none;
-        padding: 6px 12px;
-        border-radius: 5px;
-        font-weight: 500;
-        font-size: 13px;
-        white-space: nowrap;
-      ">Llámanos</a>
-    </div>
+      cursor: pointer;
+    ">📄 Exportar historial a PDF</button>
+
+    <button id="exportar-csv" style="
+      background-color: #10b981;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      cursor: pointer;
+    ">📁 Exportar historial a CSV</button>
+  </div>
+
+  <!-- Texto y enlace de contacto con fondo blanco ocupando todo el espacio -->
+  <div style="display: flex; justify-content: center; gap: 10px; width: 100%; align-items: center; background-color: #ffffff; padding: 8px; box-sizing: border-box; width: 100%; position: relative;">
+    <span style="margin-right: 8px; flex-grow: 1;">¿Necesitas ayuda con el SEO?</span>
+    <a href="https://www.indianwebs.com" target="_blank" style="
+      background-color: #2563eb;
+      color: white;
+      text-decoration: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-weight: 500;
+      font-size: 13px;
+      white-space: nowrap;
+    ">Llámanos</a>
+  </div>
+</div>
+
   `;
 
   const css = document.createElement("style");
@@ -307,11 +323,12 @@ if (!document.getElementById("indianwebs-sidebar")) {
   background: rgba(255, 255, 255, 0.6);
   backdrop-filter: blur(4px);
   border-radius: 12px;
-  padding: 0 8px 8px 8px; /* padding simétrico */
+  padding: 0 8px 8px 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   overflow-y: auto;
   max-height: 500px;
+  min-height: 150px; 
   box-sizing: border-box;
 }
 
@@ -321,6 +338,17 @@ if (!document.getElementById("indianwebs-sidebar")) {
   list-style: none;
   box-sizing: border-box;
 }
+
+#historial-vacio {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  font-size: 14px;
+  color: #aaa;
+  font-style: italic;
+}
+
 
 
  .historial-item {
@@ -400,12 +428,19 @@ button:active {
     flecha.textContent = abierto ? "▲" : "▼";
   });
 
+// Añadir el mensaje "Sin historial" cuando se cargue la extensión
+const historialVacio = document.createElement('div');
+historialVacio.id = "historial-vacio";
+historialVacio.textContent = "Sin historial";
 
+// Asegúrate de añadirlo antes de renderizar cualquier historial
+document.getElementById("historial").appendChild(historialVacio);
 
   // Cargar historial al iniciar
   chrome.storage.local.get(["historialBusquedas"], (data) => {
     const historialGuardado = data.historialBusquedas || [];
     renderizarHistorial(historialGuardado);
+    actualizarHistorial();
   });
 
   // Cerrar el sidebar
@@ -583,6 +618,33 @@ button:active {
     });
   });
 
+function actualizarHistorial() {
+  const historialLista = document.getElementById("historial-lista");
+  const historialVacio = document.getElementById("historial-vacio");
+
+  // Si el historial está vacío, mostramos el mensaje de "Sin historial"
+  if (historialLista.children.length === 0) {
+    historialVacio.style.display = 'flex';
+  } else {
+    // Si hay elementos, ocultamos el mensaje
+    historialVacio.style.display = 'none';
+  }
+}
+
+
+// También debes actualizar el historial cuando se eliminen elementos
+document.getElementById("borrar-historial").addEventListener("click", () => {
+  const historialLista = document.getElementById("historial-lista");
+
+  // Borrar todos los elementos del historial
+  historialLista.innerHTML = '';
+
+  // Actualizar el historial después de borrar los elementos
+  actualizarHistorial();
+});
+
+
+
 
   function renderizarHistorial(historial) {
     const lista = document.getElementById("historial-lista");
@@ -678,6 +740,7 @@ button:active {
 
       lista.appendChild(li);
     });
+    actualizarHistorial();
   }
 
 }
