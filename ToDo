@@ -1,12 +1,8 @@
-1. Hacer un checkbox que diga si quieres hacer click automático al encontrar el sitio web.    V
-2. Hacer que se pueda buscar en distintas regiones.
-3. Hacer que funcione en distitos idiomas.
-4. Cambiar el estilo de la extensión.
-5. Quitar apartado resultados.
+3. Cambiar el estilo de la extensión.
 6. Añadir botón de guardar.
-7. Añadir fecha en las búsquedas del historial.
 8. Hacer que lo busque desde un buscador propio llamado BeFound, que básicamente usa Google pero lo hace desde nuestra extensión.
 9. Aumentar el número de resultados en el historial.
 10. Mejorar los números en los resultados para que se vean mejor y más atractivos. (Intentar añadir algún efecto de confeti o algo).
+11. Hacer que sea responsive (inspeccionar)
 11. Hacer video de la extension
 12. Hacer capturas de la extensión.
