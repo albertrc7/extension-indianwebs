@@ -349,6 +349,27 @@ if (!document.getElementById("indianwebs-sidebar")) {
   font-style: italic;
 }
 
+.historial-item .posicion {
+  font-size: 16px; /* Tamaño de fuente más grande */
+  font-weight: bold; /* Hacer que el número se vea más prominente */
+  color: #333; /* Color por defecto */
+  margin-left: 10px;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.historial-item .posicion.bajo {
+  color: #22c55e; /* Verde para posiciones del 1 al 5 */
+}
+
+.historial-item .posicion.medio {
+  color: #eab308; /* Naranja para posiciones del 6 al 20 */
+}
+
+.historial-item .posicion.alto {
+  color: #6b7280; /* Gris para posiciones del 21 en adelante */
+}
+
 
 
  .historial-item {
@@ -670,21 +691,21 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
       const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
 
       li.innerHTML = `
-      <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
-        <div>
-          🔍 <strong>${query}</strong><br>
-          <small style="color: #555">${dominio}</small><br>
-          <small style="color: #999; font-size: 11px;">${fechaStr} – ${paisIdiomaStr}</small>
+        <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+          <div>
+            🔍 <strong>${query}</strong><br>
+            <small style="color: #555">${dominio}</small><br>
+            <small style="color: #999; font-size: 11px;">${fechaStr} – ${paisIdiomaStr}</small>
+          </div>
+          ${posicion === 'cargando'
+            ? `<div style="width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div>`
+            : posicion === 'NoEncontrado'
+              ? `<div style="font-size: 16px; color: red; margin-left: 10px;"><span style="color: red; font-size:12px;">#NoEncontrado</span></div>`
+              : posicion !== null
+                ? `<div class="posicion ${posicion <= 5 ? 'bajo' : posicion <= 20 ? 'medio' : 'alto'}">${posicion}</div>`  /* Asignar clase según el rango de posición */
+                : ""}
         </div>
-        ${posicion === 'cargando'
-          ? `<div style="width: 16px; height: 16px; border: 2px solid #ccc; border-top: 2px solid #2563eb; border-radius: 50%; animation: spin 1s linear infinite;"></div>`
-          : posicion === 'NoEncontrado'
-            ? `<div style="font-size: 16px; color: red; margin-left: 10px;"><span style="color: red; font-size:12px;">#NoEncontrado</span></div>`
-            : posicion !== null
-              ? `<div style="font-size: 12px; color: ${color}; margin-left: 10px; white-space: nowrap;">#${posicion}</div>`
-              : ""}
-      </div>
-    `;
+`;
 
       li.querySelector(".historial-item").addEventListener("click", (e) => {
         e.preventDefault();
@@ -717,7 +738,7 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
             pais,
             idioma
           });
-          const nuevoHistorial = historial.slice(0, 10);
+          const nuevoHistorial = historial.slice(0, 20);
           chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
             renderizarHistorial(nuevoHistorial);
           });
