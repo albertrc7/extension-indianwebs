@@ -478,7 +478,7 @@ document.getElementById("historial").appendChild(historialVacio);
     chrome.storage.local.get(["historialBusquedas"], (data) => {
       const historial = data.historialBusquedas || [];
       historial.unshift({ query, dominio, clave, posicion: "cargando", fecha, pais, idioma });
-      const nuevoHistorial = historial.slice(0, 10);
+      const nuevoHistorial = historial.slice(0, 20);
       chrome.storage.local.set({ historialBusquedas: nuevoHistorial }, () => {
         renderizarHistorial(nuevoHistorial);
       });
