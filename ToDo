@@ -1,7 +1,6 @@
 3. Cambiar el estilo de la extensión.
 6. Añadir botón de guardar.
 8. Hacer que lo busque desde un buscador propio llamado BeFound, que básicamente usa Google pero lo hace desde nuestra extensión.
-10. Mejorar los números en los resultados para que se vean mejor y más atractivos. (Intentar añadir algún efecto de confeti o algo).
 11. Hacer que sea responsive (inspeccionar)
 11. Hacer video de la extension
 12. Hacer capturas de la extensión.

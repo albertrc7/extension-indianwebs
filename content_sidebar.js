@@ -5,13 +5,13 @@ if (!document.getElementById("indianwebs-sidebar")) {
   sidebar.style.top = "0";
   sidebar.style.right = "0";
   sidebar.style.width = "360px";
-  sidebar.style.height = "100%";
+  sidebar.style.height = "100vh";
   sidebar.style.background = "linear-gradient(0deg, rgba(131,204,255,1) 0.4%, rgb(139, 243, 250) 100.3%)";
 
   sidebar.style.boxShadow = "-4px 0 12px rgba(0,0,0,0.1)";
   sidebar.style.zIndex = "999999";
   sidebar.style.padding = "20px";
-  sidebar.style.overflowY = "hidden";
+  sidebar.style.overflowY = "auto";
   sidebar.style.fontFamily = "'Segoe UI', Roboto, sans-serif";
   sidebar.style.color = "#111";
   sidebar.style.fontSize = "14px";
@@ -330,7 +330,11 @@ if (!document.getElementById("indianwebs-sidebar")) {
   max-height: 500px;
   min-height: 150px; 
   box-sizing: border-box;
+    max-height: calc(100vh - 250px); /* Ajusta la altura del historial para que sea dinámico */
+  overflow-y: auto; /* Habilita el scroll */
 }
+
+
 
 #historial-lista {
   padding: 0;
@@ -388,6 +392,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
 }
 
 
+
 .historial-item:hover {
   background: #f9fafb;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
@@ -402,6 +407,12 @@ if (!document.getElementById("indianwebs-sidebar")) {
      width: 6px;
   }
 
+
+  #historial::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+  }
+    
   #historial::-webkit-scrollbar-track {
      background: transparent;
     border-radius: 4px;
@@ -434,6 +445,46 @@ button:active {
   #historial::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.35);
   }
+
+      /* Responsividad de la sidebar */
+    @media (max-width: 768px) {
+      #indianwebs-sidebar {
+        width: 100%; /* Ocupa el 100% del ancho en pantallas pequeñas */
+        padding: 10px; /* Ajuste de padding en pantallas pequeñas */
+        box-sizing: border-box;
+        overflow: auto; /* Habilita el desplazamiento si el contenido es mayor que la altura de la ventana */
+        height: 100vh; /* Asegúrate de que ocupe toda la altura de la ventana */
+      }
+
+  #indianwebs-sidebar h1 {
+    font-size: 18px; /* Reducción del tamaño del título */
+  }
+
+  #indianwebs-sidebar input, #indianwebs-sidebar button {
+    max-width: 100%; /* Los inputs y botones ocupan el 100% del ancho */
+    font-size: 12px; /* Reducir el tamaño de la fuente en pantallas pequeñas */
+  }
+
+  #indianwebs-sidebar #opciones-toggle {
+    font-size: 12px; /* Reducir el tamaño del texto de las opciones */
+  }
+
+  #indianwebs-sidebar #bloque-historial {
+    max-width: 100%; /* El historial ocupa todo el ancho disponible */
+  }
+
+  /* Asegúrate de que el contenido del historial sea completamente visible */
+  #historial {
+    max-height: 250px; /* Limitar la altura del historial */
+  }
+
+  #indianwebs-sidebar img {
+    width: 50px; /* Reducir el tamaño del logo */
+    height: 50px;
+  }
+}
+
+
     
   `;
   sidebar.appendChild(css);
