@@ -173,17 +173,17 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
  <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
   <h3 style="
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    margin-left: 12px;
-    color: #333;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-align: left;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Sombra sutil */
-    flex-grow: 1;
+     margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 12px;
+  background: linear-gradient(90deg, #2563eb, #00bcd4);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  
   ">Historial</h3>
   
   <button id="borrar-historial" style="
@@ -379,7 +379,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
  .historial-item {
   background: rgba(255, 255, 255, 0.85);
-  border: 1px solid rgba(0,0,0,0.05);
+  border: 1px solid transparent;
   border-radius: 10px;
   padding: 12px 14px;
   margin-bottom: 10px;
@@ -408,6 +408,43 @@ if (!document.getElementById("indianwebs-sidebar")) {
      width: 6px;
   }
 
+  
+ .borde-verde {
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  box-shadow: 0 0 px 4px rgba(34, 197, 94, 0.15);
+}
+
+.borde-naranja {
+  border: 1px solid rgba(234, 179, 8, 0.2);
+  box-shadow: 0 0 4px 4px rgba(234, 179, 8, 0.15);
+}
+
+.borde-gris {
+  border: 1px solid rgba(107, 114, 128, 0.2);
+  box-shadow: 0 0 4px 4px rgba(107, 114, 128, 0.12);
+}
+
+.borde-rojo {
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  box-shadow: 0 0 4px 4px rgba(239, 68, 68, 0.15);
+}
+
+.borde-cargando {
+  position: relative;
+  border: 2px solid #ccc !important;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+
+@keyframes girarBorde {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
 
   #historial::-webkit-scrollbar-thumb {
     background: rgba(0, 0, 0, 0.2);
@@ -740,10 +777,24 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
         }
       }
 
+
+        let bordeClass = "";
+        if (posicion === 'cargando') {
+          bordeClass = "borde-cargando";
+        } else if (posicion === 'NoEncontrado') {
+          bordeClass = "borde-rojo";
+        } else if (!isNaN(posicion)) {
+          const num = parseInt(posicion);
+          if (num >= 1 && num <= 5) bordeClass = "borde-verde";
+          else if (num >= 6 && num <= 20) bordeClass = "borde-naranja";
+          else if (num >= 21 && num <= 100) bordeClass = "borde-gris";
+        }
+
+
       const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
 
       li.innerHTML = `
-        <div class="historial-item" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
+        <div class="historial-item ${bordeClass}" style="display: flex; justify-content: space-between; align-items: center; cursor: pointer;">
           <div>
             🔍 <strong>${query}</strong><br>
             <small style="color: #555">${dominio}</small><br>
