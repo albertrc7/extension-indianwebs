@@ -423,10 +423,11 @@ if (!document.getElementById("indianwebs-sidebar")) {
 }
 
 .borde-cargando {
-  position: relative;
+  
   border: 1px solid #ccc !important;
-  border-radius: 10px;
-  overflow: hidden;
+  box-shadow: 0 0 4px 4px rgba(134, 134, 134, 0.15);
+  
+  
 }
 
 @keyframes spin {
