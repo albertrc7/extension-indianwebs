@@ -7,7 +7,6 @@ if (!document.getElementById("indianwebs-sidebar")) {
   sidebar.style.width = "360px";
   sidebar.style.height = "100vh";
   sidebar.style.background = "linear-gradient(0deg, rgba(131,204,255,1) 0.4%, rgb(139, 243, 250) 100.3%)";
-
   sidebar.style.boxShadow = "-4px 0 12px rgba(0,0,0,0.1)";
   sidebar.style.zIndex = "999999";
   sidebar.style.padding = "20px";
@@ -103,176 +102,182 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
 
     <div id="opciones-toggle" style="width: 100%; max-width: 280px; margin-bottom: 8px; cursor: pointer; font-size: 13px; color: #000; display: flex; align-items: center; justify-content: space-between;">
-  <span><strong>Más opciones</strong></span>
-  <span id="flecha-toggle">▼</span>
-</div>
+    <span><strong>Más opciones</strong></span>
+    <span id="flecha-toggle">▼</span>
+   </div>
 
-<div id="opciones-avanzadas" style="width: 100%; max-width: 280px; margin-bottom: 12px;">
-  <div style="display: flex; justify-content: space-between; gap: 10px;">
-    <div style="flex: 1;">
-      <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
-      <select id="pais" style="
-        width: 100%;
-        padding: 6px;
-        font-size: 12px;
-        border-radius: 6px;
-        border: 1px solid #333;
-        background-color: white;
-        color: black;
-        outline: none;
-      ">
-        <option value="us">🇺🇸 United States</option>
-        <option value="es" selected>🇪🇸 España</option>
-        <option value="fr">🇫🇷 France</option>
-        <option value="de">🇩🇪 Germany</option>
-        <option value="mx">🇲🇽 Mexico</option>
-        <option value="ar">🇦🇷 Argentina</option>
-        <option value="br">🇧🇷 Brazil</option>
-      </select>
-    </div>
-    <div style="flex: 1;">
-      <label for="idioma" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">Idioma:</label>
-      <select id="idioma" style="
-        width: 100%;
-        padding: 6px;
-        font-size: 12px;
-        border-radius: 6px;
-        border: 1px solid #333;
-        background-color: white;
-        color: black;
-        outline: none;
-      ">
-        <option value="en">🇬🇧 English</option>
-        <option value="es" selected>🇪🇸 Español</option>
-        <option value="fr">🇫🇷 Français</option>
-        <option value="de">🇩🇪 Deutsch</option>
-        <option value="pt">🇧🇷 Português</option>
-        <option value="it">🇮🇹 Italiano</option>
-      </select>
-    </div>
-  </div>
-</div>
+   <div id="opciones-avanzadas" style="width: 100%; max-width: 280px; margin-bottom: 12px;">
+      <div style="display: flex; justify-content: space-between; gap: 10px;">
+        <div style="flex: 1;">
+          <label for="pais" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">País:</label>
+          <select id="pais" style="
+            width: 100%;
+            padding: 6px;
+            font-size: 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background-color: white;
+            color: black;
+            outline: none;
+          ">
+            <option value="us">🇺🇸 United States</option>
+            <option value="es" selected>🇪🇸 España</option>
+            <option value="fr">🇫🇷 France</option>
+            <option value="de">🇩🇪 Germany</option>
+            <option value="mx">🇲🇽 Mexico</option>
+            <option value="ar">🇦🇷 Argentina</option>
+            <option value="br">🇧🇷 Brazil</option>
+          </select>
+        </div>
+        <div style="flex: 1;">
+          <label for="idioma" style="font-size: 12px; color: #000; display: block; margin-bottom: 4px;">Idioma:</label>
+          <select id="idioma" style="
+            width: 100%;
+            padding: 6px;
+            font-size: 12px;
+            border-radius: 6px;
+            border: 1px solid #333;
+            background-color: white;
+            color: black;
+            outline: none;
+          ">
+            <option value="en">🇬🇧 English</option>
+            <option value="es" selected>🇪🇸 Español</option>
+            <option value="fr">🇫🇷 Français</option>
+            <option value="de">🇩🇪 Deutsch</option>
+            <option value="pt">🇧🇷 Português</option>
+            <option value="it">🇮🇹 Italiano</option>
+          </select>
+        </div>
+      </div>
+   </div>
  
  
-<!-- Bloque contenedor del historial -->
-<div id="bloque-historial" style="
-  background: rgba(255, 255, 255, 0.25);
-  backdrop-filter: blur(6px);
-  border-radius: 16px;
-  padding: 16px 14px;
-  margin: 10px
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-  width: 100%;
-  max-width: 300px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-">
+    <!-- Bloque contenedor del historial -->
+    <div id="bloque-historial" style="
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(6px);
+      border-radius: 16px;
+      padding: 16px 14px;
+      margin: 10px
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      width: 100%;
+      max-width: 300px;
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    ">
 
- <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
-  <h3 style="
-     margin: 0;
-  font-size: 18px;
-  font-weight: 600;
-  margin-left: 12px;
-  background: linear-gradient(90deg, #2563eb, #00bcd4);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
-  ">Historial</h3>
-  
-  <button id="borrar-historial" style="
-    background: transparent;
-    color: #2563eb;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 50%;
-  ">🗑️</button>
-</div>
+    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 8px 0;">
+      <h3 style="
+        margin: 0;
+      font-size: 18px;
+      font-weight: 600;
+      margin-left: 12px;
+      background: linear-gradient(90deg, #2563eb,rgb(0, 127, 212));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      
+      ">Historial</h3>
+      
+      <button id="borrar-historial" style="
+        background: transparent;
+        color: #2563eb;
+        border: none;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 4px;
+        border-radius: 50%;
+      ">🗑️</button>
+    </div>
 
 
 
-  <!-- Lista de historial -->
-  <div id="historial" style="
-    overflow-y: auto;
-    width: 100%;
-    max-height: 250px;
-    padding-right: 4px;
-    padding-top: 10px;
-  ">
-    <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
-  </div>
-</div>
+    <!-- Lista de historial -->
+    <div id="historial" style="
+      overflow-y: auto;
+      width: 100%;
+      max-height: 250px;
+      padding-right: 4px;
+      padding-top: 10px;
+    ">
+      <ul id="historial-lista" style="list-style: none; padding: 0; margin: 0;"></ul>
+    </div>
+    </div>
 
 
 
         
-<div id="cta-seo" style="
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  background: transparent; /* Fondo transparente para que se vea el fondo de la extensión */
-  text-align: center;
-  font-size: 13px;
-  color: #111;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-">
-  <!-- Botones de exportación colocados en la parte superior con fondo transparente -->
-  <div style="margin-bottom: 16px; width: 90%; display: flex; flex-direction: row; gap: 10px; background: transparent;">
-    <button id="exportar-pdf" style="
-      background-color: #6b7280;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
+    <div id="cta-seo" style="
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: transparent; /* Fondo transparente para que se vea el fondo de la extensión */
+      text-align: center;
       font-size: 13px;
-      cursor: pointer;
-    ">📄 Exportar historial a PDF</button>
+      color: #111;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+    ">
+      <!-- Botones de exportación colocados en la parte superior con fondo transparente -->
+      <div style="margin-bottom: 16px; width: 90%; display: flex; flex-direction: row; gap: 10px; background: transparent;">
+        <button id="exportar-pdf" style="
+          background-color: #6b7280;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 12px;
+          font-size: 13px;
+          cursor: pointer;
+        ">📄 Exportar historial a PDF</button>
 
-    <button id="exportar-csv" style="
-      background-color: #10b981;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 6px 12px;
-      font-size: 13px;
-      cursor: pointer;
-    ">📁 Exportar historial a CSV</button>
-  </div>
+        <button id="exportar-csv" style="
+          background-color: #10b981;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          padding: 6px 12px;
+          font-size: 13px;
+          cursor: pointer;
+        ">📁 Exportar historial a CSV</button>
+      </div>
 
-  <!-- Texto y enlace de contacto con fondo blanco ocupando todo el espacio -->
-  <div style="display: flex; justify-content: center; gap: 10px; width: 100%; align-items: center; background-color: #ffffff; padding: 8px; box-sizing: border-box; width: 100%; position: relative;">
-    <span style="margin-right: 8px; flex-grow: 1;">¿Necesitas ayuda con el SEO?</span>
-    <a href="https://www.indianwebs.com" target="_blank" style="
-      background-color: #2563eb;
-      color: white;
-      text-decoration: none;
-      padding: 6px 12px;
-      border-radius: 5px;
-      font-weight: 500;
-      font-size: 13px;
-      white-space: nowrap;
-    ">Llámanos</a>
-  </div>
-</div>
+      <!-- Texto y enlace de contacto con fondo blanco ocupando todo el espacio -->
+      <div style="display: flex; justify-content: center; gap: 10px; width: 100%; align-items: center; background-color: #ffffff; padding: 8px; box-sizing: border-box; width: 100%; position: relative;">
+        <span style="margin-right: 8px; flex-grow: 1;">¿Necesitas ayuda con el SEO?</span>
+        <a href="https://www.indianwebs.com" target="_blank" style="
+          background-color: #2563eb;
+          color: white;
+          text-decoration: none;
+          padding: 6px 12px;
+          border-radius: 5px;
+          font-weight: 500;
+          font-size: 13px;
+          white-space: nowrap;
+        ">Llámanos</a>
+      </div>
+    </div>
 
   `;
 
   const css = document.createElement("style");
   css.textContent = `
-   input {
+  
+  ::placeholder {
+    color: #777 !important;
+    opacity: 1 !important;
+  }
+  
+  input {
     width: 100%;
     max-width: 280px;
     padding: 10px 14px;
@@ -296,13 +301,6 @@ if (!document.getElementById("indianwebs-sidebar")) {
   input:hover {
     border-color: #999;
   }
-
- 
-  ::placeholder {
-    color: #777 !important;
-    opacity: 1 !important;
-  }
-
     
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -316,9 +314,6 @@ if (!document.getElementById("indianwebs-sidebar")) {
   caret-color: #2563eb !important;
   transition: background-color 9999s ease-out, color 9999s ease-out;
   }
-
-
-
 
  #historial {
   background: rgba(255, 255, 255, 0.6);
@@ -334,8 +329,6 @@ if (!document.getElementById("indianwebs-sidebar")) {
     max-height: calc(100vh - 250px); /* Ajusta la altura del historial para que sea dinámico */
   overflow-y: auto; /* Habilita el scroll */
 }
-
-
 
 #historial-lista {
   padding: 0;
@@ -375,9 +368,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
   color: #6b7280; /* Gris para posiciones del 21 en adelante */
 }
 
-
-
- .historial-item {
+.historial-item {
   background: rgba(255, 255, 255, 0.85);
   border: 1px solid transparent;
   border-radius: 10px;
@@ -392,24 +383,26 @@ if (!document.getElementById("indianwebs-sidebar")) {
   box-sizing: border-box;
 }
 
-
-
 .historial-item:hover {
   background: #f9fafb;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.06);
 }
 
- @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-  }
- 
-  #historial::-webkit-scrollbar {
-     width: 6px;
-  }
+#historial::-webkit-scrollbar {
+  width: 6px;
+}
 
-  
- .borde-verde {
+#historial::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+    
+#historial::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 4px;
+}
+
+.borde-verde {
   border: 1px solid rgba(34, 197, 94, 0.2);
   box-shadow: 0 0 px 4px rgba(34, 197, 94, 0.15);
 }
@@ -431,12 +424,16 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
 .borde-cargando {
   position: relative;
-  border: 2px solid #ccc !important;
+  border: 1px solid #ccc !important;
   border-radius: 10px;
   overflow: hidden;
 }
 
-
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+ 
 @keyframes girarBorde {
   from {
     transform: rotate(0deg);
@@ -446,52 +443,43 @@ if (!document.getElementById("indianwebs-sidebar")) {
   }
 }
 
-  #historial::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 4px;
-  }
-    
-  #historial::-webkit-scrollbar-track {
-     background: transparent;
-    border-radius: 4px;
-  }
-
-  button:hover {
+button:hover {
   transform: translateY(-1px);
   box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
+
 button:active {
   transform: translateY(1px);
   box-shadow: none;
 }
 
-    #opciones-avanzadas {
+#opciones-avanzadas {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
-  }
-  #opciones-avanzadas.abierto {
-    max-height: 400px;
-  }
-
+}
   
-  #historial::-webkit-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2);
+#opciones-avanzadas.abierto {
+    max-height: 400px;
+}
+
+#historial::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
-  }
+}
 
-  #historial::-webkit-scrollbar-thumb:hover {
+#historial::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.35);
-  }
+}
 
-      /* Responsividad de la sidebar */
-    @media (max-width: 768px) {
-      #indianwebs-sidebar {
-        width: 100%; /* Ocupa el 100% del ancho en pantallas pequeñas */
-        padding: 10px; /* Ajuste de padding en pantallas pequeñas */
+/* Responsividad de la sidebar */
+@media (max-width: 768px) {
+    #indianwebs-sidebar {
+        width: 100%; 
+        padding: 10px; 
         box-sizing: border-box;
-        overflow: auto; /* Habilita el desplazamiento si el contenido es mayor que la altura de la ventana */
-        height: 100vh; /* Asegúrate de que ocupe toda la altura de la ventana */
+        overflow: auto; 
+        height: 100vh; 
       }
 
   #indianwebs-sidebar h1 {
@@ -499,44 +487,41 @@ button:active {
   }
 
   #indianwebs-sidebar input, #indianwebs-sidebar button {
-    max-width: 100%; /* Los inputs y botones ocupan el 100% del ancho */
-    font-size: 12px; /* Reducir el tamaño de la fuente en pantallas pequeñas */
+    max-width: 100%; 
+    font-size: 12px; 
   }
 
   #indianwebs-sidebar #opciones-toggle {
-    font-size: 12px; /* Reducir el tamaño del texto de las opciones */
+    font-size: 12px; 
   }
 
   #indianwebs-sidebar #bloque-historial {
-    max-width: 100%; /* El historial ocupa todo el ancho disponible */
+    max-width: 100%; 
   }
 
-  /* Asegúrate de que el contenido del historial sea completamente visible */
   #historial {
-    max-height: 250px; /* Limitar la altura del historial */
+    max-height: 250px; 
   }
 
   #indianwebs-sidebar img {
-    width: 50px; /* Reducir el tamaño del logo */
+    width: 50px; 
     height: 50px;
   }
 }
-
-
-    
   `;
-  sidebar.appendChild(css);
 
-  document.body.appendChild(sidebar);
+sidebar.appendChild(css);
 
-  document.getElementById("opciones-toggle").addEventListener("click", () => {
-    const opciones = document.getElementById("opciones-avanzadas");
-    const flecha = document.getElementById("flecha-toggle");
+document.body.appendChild(sidebar);
 
-    opciones.classList.toggle("abierto");
-    const abierto = opciones.classList.contains("abierto");
-    flecha.textContent = abierto ? "▲" : "▼";
-  });
+document.getElementById("opciones-toggle").addEventListener("click", () => {
+  const opciones = document.getElementById("opciones-avanzadas");
+  const flecha = document.getElementById("flecha-toggle");
+
+  opciones.classList.toggle("abierto");
+  const abierto = opciones.classList.contains("abierto");
+  flecha.textContent = abierto ? "▲" : "▼";
+});
 
 // Añadir el mensaje "Sin historial" cuando se cargue la extensión
 const historialVacio = document.createElement('div');
@@ -547,29 +532,29 @@ historialVacio.textContent = "Sin historial";
 document.getElementById("historial").appendChild(historialVacio);
 
   // Cargar historial al iniciar
-  chrome.storage.local.get(["historialBusquedas"], (data) => {
-    const historialGuardado = data.historialBusquedas || [];
-    renderizarHistorial(historialGuardado);
-    actualizarHistorial();
-  });
+chrome.storage.local.get(["historialBusquedas"], (data) => {
+   const historialGuardado = data.historialBusquedas || [];
+   renderizarHistorial(historialGuardado);
+   actualizarHistorial();
+});
 
   // Cerrar el sidebar
-  document.getElementById("cerrar-sidebar").addEventListener("click", () => {
-    sidebar.remove();
-  });
+document.getElementById("cerrar-sidebar").addEventListener("click", () => {
+   sidebar.remove();
+});
 
   // Borrar historial
-  document.getElementById("borrar-historial").addEventListener("click", () => {
+document.getElementById("borrar-historial").addEventListener("click", () => {
     chrome.storage.local.remove("historialBusquedas", () => {
-      renderizarHistorial([]);
-    });
+    renderizarHistorial([]);
   });
+});
 
-  document.getElementById("iniciar").addEventListener("click", () => {
-    const query = document.getElementById("busqueda").value.trim();
-    const dominio = document.getElementById("dominio").value.trim();
-    const pais = document.getElementById("pais").value;
-    const idioma = document.getElementById("idioma").value;
+document.getElementById("iniciar").addEventListener("click", () => {
+  const query = document.getElementById("busqueda").value.trim();
+  const dominio = document.getElementById("dominio").value.trim();
+  const pais = document.getElementById("pais").value;
+  const idioma = document.getElementById("idioma").value;
 
 
     if (!query || !dominio) {
@@ -753,12 +738,9 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
   actualizarHistorial();
 });
 
-
-
-
-  function renderizarHistorial(historial) {
-    const lista = document.getElementById("historial-lista");
-    lista.innerHTML = "";
+function renderizarHistorial(historial) {
+  const lista = document.getElementById("historial-lista");
+  lista.innerHTML = "";
 
     historial.forEach(({ query, dominio, posicion, clave, fecha, pais, idioma }) => {
       const li = document.createElement("li");
@@ -777,8 +759,7 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
         }
       }
 
-
-        let bordeClass = "";
+      let bordeClass = "";
         if (posicion === 'cargando') {
           bordeClass = "borde-cargando";
         } else if (posicion === 'NoEncontrado') {
@@ -789,7 +770,6 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
           else if (num >= 6 && num <= 20) bordeClass = "borde-naranja";
           else if (num >= 21 && num <= 100) bordeClass = "borde-gris";
         }
-
 
       const paisIdiomaStr = `${pais?.toUpperCase() || "??"}/${idioma?.toLowerCase() || "??"}`;
 
