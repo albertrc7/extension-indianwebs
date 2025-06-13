@@ -404,7 +404,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
 
 .borde-verde {
   border: 1px solid rgba(34, 197, 94, 0.2);
-  box-shadow: 0 0 px 4px rgba(34, 197, 94, 0.15);
+  box-shadow: 0 0 4px 4px rgba(34, 197, 94, 0.15);
 }
 
 .borde-naranja {
