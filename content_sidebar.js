@@ -100,7 +100,7 @@ if (!document.getElementById("indianwebs-sidebar")) {
     ">Iniciar búsqueda</button>
 
 
-
+    
     <div id="opciones-toggle" style="width: 100%; max-width: 280px; margin-bottom: 8px; cursor: pointer; font-size: 13px; color: #000; display: flex; align-items: center; justify-content: space-between;">
     <span><strong>Más opciones</strong></span>
     <span id="flecha-toggle">▼</span>
@@ -567,7 +567,10 @@ document.getElementById("iniciar").addEventListener("click", () => {
     const fecha = Date.now();
 
 
-    chrome.runtime.sendMessage({ action: "iniciarBusqueda", query, dominio, clave, pais, idioma });
+    chrome.runtime.sendMessage({ action: "iniciarBusqueda", clave });
+
+  buscarEnGoogle(query, dominio, clave, pais, idioma);
+
 
 
 
@@ -739,6 +742,73 @@ document.getElementById("borrar-historial").addEventListener("click", () => {
   actualizarHistorial();
 });
 
+
+function generarUULE(pais) {
+  const localizaciones = {
+    us: "W0wyYXB1Y2F1Z2VuZXQ", // United States
+    es: "W0wyYXVjaWph",        // España
+    fr: "W0wyZnJhbmNl",        // France
+    de: "W0wyZGV1dHNjaGxhbmQ", // Germany
+    mx: "W0wybWV4aWNv",        // México
+    ar: "W0wyYXJnZW50aW5h",    // Argentina
+    br: "W0wyYnJhc2ls",        // Brazil
+  };
+
+  return localizaciones[pais] ? `uule=${localizaciones[pais]}` : "";
+}
+
+
+async function buscarEnGoogle(query, dominioObjetivo, clave, pais = "us", idioma = "en") {
+  const uule = generarUULE(pais); // ⚠️ lo explico más abajo
+  const url = `https://www.google.com/search?q=${encodeURIComponent(query)}&num=100&${uule}&hl=${idioma}`;
+
+
+  try {
+    const response = await fetch(url);
+    const html = await response.text();
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const resultados = Array.from(doc.querySelectorAll('.tF2Cxc'));
+
+    let posicionReal = null;
+
+    resultados.forEach((resultado, index) => {
+      const link = resultado.querySelector(`a[href*="${dominioObjetivo}"]`);
+      if (link && posicionReal === null) {
+        posicionReal = index + 1;
+
+        chrome.runtime.sendMessage({
+          action: "guardarPosicion",
+          posicion: posicionReal,
+          clave: clave
+        });
+
+      
+        //window.open(link.href, '_blank');
+      }
+    });
+
+    // Si no se encontró nada
+    if (posicionReal === null) {
+      chrome.runtime.sendMessage({
+        action: "guardarPosicion",
+        posicion: "NoEncontrado",
+        clave: clave
+      });
+    }
+
+  } catch (error) {
+    console.error("Error al buscar en Google:", error);
+    chrome.runtime.sendMessage({
+      action: "guardarPosicion",
+      posicion: "Error",
+      clave: clave
+    });
+  }
+}
+
+
 function renderizarHistorial(historial) {
   const lista = document.getElementById("historial-lista");
   lista.innerHTML = "";
@@ -802,14 +872,9 @@ function renderizarHistorial(historial) {
 
         const nuevaClave = `${query}_${dominio}_${Date.now()}`;
 
-        chrome.runtime.sendMessage({
-          action: "iniciarBusqueda",
-          query,
-          dominio,
-          clave: nuevaClave,
-          pais,
-          idioma
-        });
+          chrome.runtime.sendMessage({ action: "iniciarBusqueda", clave: nuevaClave });
+
+  buscarEnGoogle(query, dominio, nuevaClave, pais, idioma);
 
         chrome.storage.local.get(["historialBusquedas"], (data) => {
           const historial = data.historialBusquedas || [];

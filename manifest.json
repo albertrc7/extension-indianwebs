@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "BeFound",
-  "version": "1.0",
-  "description": "Descubre en qué posición aparece tu web, haz clic automáticamente en tu dominio y mejora tu visibilidad con esta extensión pensada para SEO.",
+  "version": "2.0",
+  "description": "Descubre en qué posición aparece tu web, haz clic automáticamente en tu dominio y mejora tu visibilidad con esta extensió SEO.",
   "permissions": [
     "scripting",
     "tabs",
@@ -16,6 +16,7 @@
     "default_title": "BeFound"
   },
   "host_permissions": [
+    "https://www.google.com/*",
     "<all_urls>"
   ],
   "web_accessible_resources": [
